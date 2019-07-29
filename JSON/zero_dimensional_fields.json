@@ -1,0 +1,512 @@
+{
+    "meta": {
+        "format": "1"
+    },
+    "steps": {
+        "cedar.processing.sources.Boost": {
+            "name": "Boost",
+            "strength": "4.9000000000000004",
+            "active": "true",
+            "deactivate on reset": "false",
+            "comments": ""
+        },
+        "cedar.processing.sources.Boost": {
+            "name": "Boost 2",
+            "strength": "4.8999999999999995",
+            "active": "true",
+            "deactivate on reset": "false",
+            "comments": ""
+        },
+        "cedar.dynamics.NeuralField": {
+            "name": "Neural Field",
+            "activation as output": "false",
+            "discrete metric (workaround)": "false",
+            "update stepIcon according to output": "true",
+            "threshold for updating the stepIcon": "0.80000000000000004",
+            "dimensionality": "0",
+            "sizes": "",
+            "time scale": "100",
+            "resting level": "-5",
+            "input noise gain": "0",
+            "sigmoid": {
+                "type": "cedar.aux.math.AbsSigmoid",
+                "threshold": "0",
+                "beta": "100"
+            },
+            "global inhibition": "-0.01",
+            "lateral kernels": {
+                "cedar.aux.kernel.Box": {
+                    "dimensionality": "1",
+                    "anchor": [
+                        "0"
+                    ],
+                    "amplitude": "1",
+                    "widths": [
+                        "100"
+                    ]
+                }
+            },
+            "lateral kernel convolution": {
+                "borderType": "Zero",
+                "mode": "Same",
+                "engine": {
+                    "type": "cedar.aux.conv.OpenCV"
+                },
+                "alternate even kernel center": "false"
+            },
+            "noise correlation kernel": {
+                "dimensionality": "2",
+                "anchor": [
+                    "0",
+                    "0"
+                ],
+                "amplitude": "0",
+                "sigmas": [
+                    "3",
+                    "3"
+                ],
+                "normalize": "true",
+                "shifts": [
+                    "0",
+                    "0"
+                ],
+                "limit": "5"
+            },
+            "comments": ""
+        },
+        "cedar.dynamics.NeuralField": {
+            "name": "Neural Field 2",
+            "activation as output": "false",
+            "discrete metric (workaround)": "false",
+            "update stepIcon according to output": "true",
+            "threshold for updating the stepIcon": "0.80000000000000004",
+            "dimensionality": "0",
+            "sizes": "",
+            "time scale": "100",
+            "resting level": "-5",
+            "input noise gain": "0",
+            "sigmoid": {
+                "type": "cedar.aux.math.AbsSigmoid",
+                "threshold": "0",
+                "beta": "100"
+            },
+            "global inhibition": "-0.01",
+            "lateral kernels": {
+                "cedar.aux.kernel.Gauss": {
+                    "dimensionality": "1",
+                    "anchor": [
+                        "0"
+                    ],
+                    "amplitude": "1",
+                    "sigmas": [
+                        "3"
+                    ],
+                    "normalize": "false",
+                    "shifts": [
+                        "0"
+                    ],
+                    "limit": "5"
+                }
+            },
+            "lateral kernel convolution": {
+                "borderType": "Zero",
+                "mode": "Same",
+                "engine": {
+                    "type": "cedar.aux.conv.OpenCV"
+                },
+                "alternate even kernel center": "false"
+            },
+            "noise correlation kernel": {
+                "dimensionality": "2",
+                "anchor": [
+                    "0",
+                    "0"
+                ],
+                "amplitude": "0",
+                "sigmas": [
+                    "3",
+                    "3"
+                ],
+                "normalize": "true",
+                "shifts": [
+                    "0",
+                    "0"
+                ],
+                "limit": "5"
+            },
+            "comments": ""
+        }
+    },
+    "triggers": {
+        "cedar.processing.LoopedTrigger": {
+            "name": "default trigger",
+            "step size": "0.02 s",
+            "fake Euler step size": "0.02 s",
+            "minimum sleep time": "0.0002 s",
+            "idle time": "1e-05 s",
+            "simulated time": "0.001 s",
+            "loop mode": "real deltaT",
+            "start with all": "true",
+            "listeners": [
+                "Neural Field",
+                "Neural Field 2"
+            ]
+        }
+    },
+    "connections": [
+        {
+            "source": "Boost.boost",
+            "target": "Neural Field.input"
+        },
+        {
+            "source": "Boost 2.boost",
+            "target": "Neural Field 2.input"
+        }
+    ],
+    "name": "",
+    "connectors": "",
+    "is looped": "true",
+    "time factor": "0.45000000000000001",
+    "ui": [
+        {
+            "type": "step",
+            "step": "Boost",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "-480",
+            "positionY": "-60"
+        },
+        {
+            "type": "step",
+            "step": "Boost 2",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "-480",
+            "positionY": "330"
+        },
+        {
+            "type": "step",
+            "step": "Neural Field",
+            "display style": "ICON_AND_TEXT",
+            "width": "160",
+            "height": "50",
+            "positionX": "-240",
+            "positionY": "-60"
+        },
+        {
+            "type": "step",
+            "step": "Neural Field 2",
+            "display style": "ICON_AND_TEXT",
+            "width": "160",
+            "height": "50",
+            "positionX": "-240",
+            "positionY": "330"
+        },
+        {
+            "type": "trigger",
+            "trigger": "default trigger",
+            "width": "30",
+            "height": "30",
+            "positionX": "0",
+            "positionY": "0"
+        }
+    ],
+    "ui view": {
+        "ScrollBarX": "0",
+        "ScrollBarY": "-58",
+        "SliderPosX": "0",
+        "SliderPosY": "-58",
+        "Zoom": "0.94999999999999996"
+    },
+    "ui generic": {
+        "group": "",
+        "open plots": {
+            "Neural Field 2Widget0": {
+                "step": "Neural Field 2",
+                "position_x": "544",
+                "position_y": "735",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.36657681940700809",
+                "position_relative_y": "0.7810839532412327",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "lateral kernel",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Neural Field 2Widget1": {
+                "step": "Neural Field 2",
+                "position_x": "764",
+                "position_y": "735",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.51482479784366575",
+                "position_relative_y": "0.7810839532412327",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "sigmoided activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Neural Field 2Widget2": {
+                "step": "Neural Field 2",
+                "position_x": "993",
+                "position_y": "732",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.66913746630727766",
+                "position_relative_y": "0.77789585547290119",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Neural Field 2Widget3": {
+                "step": "Neural Field 2",
+                "position_x": "302",
+                "position_y": "717",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.20350404312668463",
+                "position_relative_y": "0.7619553666312433",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "lateral interaction",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Neural FieldWidget0": {
+                "step": "Neural Field",
+                "position_x": "772",
+                "position_y": "376",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.52021563342318056",
+                "position_relative_y": "0.39957492029755581",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "sigmoided activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Neural FieldWidget1": {
+                "step": "Neural Field",
+                "position_x": "538",
+                "position_y": "373",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.36253369272237196",
+                "position_relative_y": "0.39638682252922425",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "lateral kernel",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Neural FieldWidget2": {
+                "step": "Neural Field",
+                "position_x": "992",
+                "position_y": "377",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.66846361185983827",
+                "position_relative_y": "0.40063761955366634",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Neural FieldWidget3": {
+                "step": "Neural Field",
+                "position_x": "305",
+                "position_y": "377",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.2055256064690027",
+                "position_relative_y": "0.40063761955366634",
+                "width_relative": "0.13477088948787061",
+                "height_relative": "0.21253985122210414",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "lateral interaction",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "plot groups": "",
+        "architecture widgets": "",
+        "robots": "",
+        "width": "250",
+        "height": "250",
+        "smart mode": "false",
+        "collapsed": "false",
+        "lock geometry": "false",
+        "uncollapsed width": "250",
+        "uncollapsed height": "250",
+        "positionX": "0",
+        "positionY": "0"
+    }
+}
