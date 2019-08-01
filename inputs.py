@@ -1,5 +1,12 @@
 import numpy as np 
 
+def one_dimensional_peak(p, std, a, size=10):
+    x = np.arange(size)
+
+    activations = a * np.exp(-0.5*(x-p)**2/std**2)
+
+    return activations
+
 def two_dimensional_peak(p_x, p_y, std, a, size=10):
     
     x = np.arange(size)
