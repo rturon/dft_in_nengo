@@ -25,9 +25,9 @@
             "threshold for updating the stepIcon": "0.80000000000000004",
             "dimensionality": "0",
             "sizes": "",
-            "time scale": "50",
+            "time scale": "200",
             "resting level": "-5",
-            "input noise gain": "0.10000000000000001",
+            "input noise gain": "0",
             "sigmoid": {
                 "type": "cedar.aux.math.AbsSigmoid",
                 "threshold": "0",
@@ -82,7 +82,7 @@
             "threshold for updating the stepIcon": "0.80000000000000004",
             "dimensionality": "0",
             "sizes": "",
-            "time scale": "50",
+            "time scale": "30",
             "resting level": "-5",
             "input noise gain": "0.10000000000000001",
             "sigmoid": {
@@ -90,7 +90,7 @@
                 "threshold": "0",
                 "beta": "100"
             },
-            "global inhibition": "0",
+            "global inhibition": "-0.10000000000000001",
             "lateral kernels": {
                 "cedar.aux.kernel.Gauss": {
                     "dimensionality": "1",
@@ -166,7 +166,7 @@
     "name": "",
     "connectors": "",
     "is looped": "true",
-    "time factor": "0.45000000000000001",
+    "time factor": "0.050000000000000003",
     "ui": [
         {
             "type": "step",
@@ -215,9 +215,9 @@
     ],
     "ui view": {
         "ScrollBarX": "0",
-        "ScrollBarY": "-58",
+        "ScrollBarY": "0",
         "SliderPosX": "0",
-        "SliderPosY": "-58",
+        "SliderPosY": "0",
         "Zoom": "0.94999999999999996"
     },
     "ui generic": {
@@ -225,14 +225,14 @@
         "open plots": {
             "Neural FieldWidget0": {
                 "step": "Neural Field",
-                "position_x": "279",
-                "position_y": "189",
+                "position_x": "480",
+                "position_y": "242",
                 "width": "483",
-                "height": "421",
-                "position_relative_x": "0.26345609065155806",
-                "position_relative_y": "0.20085015940488843",
-                "width_relative": "0.45609065155807366",
-                "height_relative": "0.44739638682252925",
+                "height": "244",
+                "position_relative_x": "0.25",
+                "position_relative_y": "0.23472356935014549",
+                "width_relative": "0.25156250000000002",
+                "height_relative": "0.23666343355965083",
                 "data_list": [
                     {
                         "id": "BUFFER",
@@ -277,14 +277,14 @@
             },
             "Neural FieldWidget1": {
                 "step": "Neural Field",
-                "position_x": "1173",
-                "position_y": "124",
+                "position_x": "1389",
+                "position_y": "645",
                 "width": "386",
                 "height": "396",
-                "position_relative_x": "1.1076487252124645",
-                "position_relative_y": "0.13177470775770456",
-                "width_relative": "0.36449480642115201",
-                "height_relative": "0.4208289054197662",
+                "position_relative_x": "0.72343749999999996",
+                "position_relative_y": "0.62560620756547036",
+                "width_relative": "0.20104166666666667",
+                "height_relative": "0.38409311348205627",
                 "data_list": [
                     {
                         "id": "BUFFER",

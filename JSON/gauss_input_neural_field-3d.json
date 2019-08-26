@@ -5,7 +5,7 @@
     "steps": {
         "cedar.processing.sources.Boost": {
             "name": "Boost",
-            "strength": "1",
+            "strength": "-1",
             "active": "true",
             "deactivate on reset": "false",
             "comments": ""
@@ -61,7 +61,7 @@
                 "threshold": "0",
                 "beta": "100"
             },
-            "global inhibition": "0",
+            "global inhibition": "-0.10000000000000001",
             "lateral kernels": {
                 "cedar.aux.kernel.Gauss": {
                     "dimensionality": "3",
@@ -117,18 +117,6 @@
             "comments": ""
         },
         "cedar.processing.Projection": {
-            "name": "Projection 2",
-            "dimension mapping": {
-                "0": "4294967295",
-                "1": "4294967295",
-                "2": "4294967295"
-            },
-            "output dimensionality": "0",
-            "output dimension sizes": "",
-            "compression type": "SUM",
-            "comments": ""
-        },
-        "cedar.processing.Projection": {
             "name": "Projection 3",
             "dimension mapping": {
                 "0": "4294967295",
@@ -175,10 +163,6 @@
             "target": "Neural Field.input"
         },
         {
-            "source": "Neural Field.sigmoided activation",
-            "target": "Projection 2.input"
-        },
-        {
             "source": "Const Matrix.matrix",
             "target": "Projection 3.input"
         },
@@ -192,7 +176,8 @@
         }
     ],
     "records": {
-        "Boost[OUTPUT].boost": "0.193 s"
+        "Boost[OUTPUT].boost": "0.01 s",
+        "Static Gain[OUTPUT].output": "0.01 s"
     },
     "name": "",
     "connectors": "",
@@ -237,15 +222,6 @@
         },
         {
             "type": "step",
-            "step": "Projection 2",
-            "display style": "ICON_ONLY",
-            "width": "40",
-            "height": "40",
-            "positionX": "330",
-            "positionY": "120"
-        },
-        {
-            "type": "step",
             "step": "Projection 3",
             "display style": "ICON_ONLY",
             "width": "40",
@@ -281,63 +257,25 @@
         }
     ],
     "ui view": {
-        "ScrollBarX": "-114",
+        "ScrollBarX": "0",
         "ScrollBarY": "0",
-        "SliderPosX": "-114",
+        "SliderPosX": "0",
         "SliderPosY": "0",
-        "Zoom": "0.94999999999999996"
+        "Zoom": "0.84999999999999998"
     },
     "ui generic": {
         "group": "",
         "open plots": {
-            "Projection 2Widget0": {
-                "step": "Projection 2",
-                "position_x": "1396",
-                "position_y": "251",
-                "width": "349",
-                "height": "525",
-                "position_relative_x": "1.3182247403210576",
-                "position_relative_y": "0.26673751328374068",
-                "width_relative": "0.32955618508026441",
-                "height_relative": "0.55791710945802342",
-                "data_list": [
-                    {
-                        "id": "INPUT",
-                        "name": "input",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "smooth scaling": "true",
-                            "keep aspect ratio": "true",
-                            "automatic value scaling": "false",
-                            "show legend": "true",
-                            "value limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            },
-                            "color jet": "PlotDefault",
-                            "sliced dimension": "2",
-                            "desired columns": "8"
-                        }
-                    }
-                ]
-            },
-            "Projection 2Widget1": {
-                "step": "Projection 2",
-                "position_x": "940",
-                "position_y": "315",
-                "width": "200",
-                "height": "438",
-                "position_relative_x": "0.88762983947119922",
-                "position_relative_y": "0.33475026567481403",
-                "width_relative": "0.18885741265344666",
-                "height_relative": "0.46546227417640806",
+            "Static GainWidget0": {
+                "step": "Static Gain",
+                "position_x": "2342",
+                "position_y": "1755",
+                "width": "218",
+                "height": "565",
+                "position_relative_x": "1.2197916666666666",
+                "position_relative_y": "1.702230843840931",
+                "width_relative": "0.11354166666666667",
+                "height_relative": "0.54801163918525708",
                 "data_list": [
                     {
                         "id": "OUTPUT",
