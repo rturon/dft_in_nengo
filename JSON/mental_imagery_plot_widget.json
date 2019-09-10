@@ -1,0 +1,493 @@
+{
+  "configuration":
+  {
+    "default size":
+    {
+      "width": "1024",
+      "height": "768"
+    }
+  },
+  "entries":
+  [
+
+    {
+      "row": "1",
+      "column": "2",
+      "column span": "1",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+        [
+        {"RI.activation": "Reference Behavior.intention node[BUFFER].activation"},
+        {"RI.output": "Reference Behavior.intention node[OUTPUT].sigmoided activation"},
+        {"RC.activation": "Reference Behavior.CoS node[BUFFER].activation"},
+        {"RC.output": "Reference Behavior.CoS node[OUTPUT].sigmoided activation"},
+
+        {"RFI.activation": "Reference Field & Reference Production Nodes.intention node[BUFFER].activation"},
+        {"RFI.output": "Reference Field & Reference Production Nodes.intention node[OUTPUT].sigmoided activation"},
+        {"RFC.activation": "Reference Field & Reference Production Nodes.CoS node[BUFFER].activation"},
+        {"RFC.output": "Reference Field & Reference Production Nodes.CoS node[OUTPUT].sigmoided activation"},
+
+        {"RCI.activation": "Reference Memory Nodes & Color Field.intention node[BUFFER].activation"},
+        {"RCI.output": "Reference Memory Nodes & Color Field.intention node[OUTPUT].sigmoided activation"},
+        {"RCC.activation": "Reference Memory Nodes & Color Field.CoS node[BUFFER].activation"},
+        {"RCC.output": "Reference Memory Nodes & Color Field.CoS node[OUTPUT].sigmoided activation"}
+
+      ],
+        "plot configuration":
+        {
+          "autoscaling": "false",
+          "y axis limits":
+          {
+            "lower limit": "-10",
+            "upper limit": "10"
+          }
+        }
+    },
+	{
+      "row": "0",
+      "column": "2",
+      "column span": "1",
+      "type": "label",
+      "text": "reference processes",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+
+    {
+      "row": "1",
+      "column": "3",
+      "column span": "1",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+        [
+        {"TI.activation": "Target Behavior.intention node[BUFFER].activation"},
+        {"TI.output": "Target Behavior.intention node[OUTPUT].sigmoided activation"},
+        {"TC.activation": "Target Behavior.CoS node[BUFFER].activation"},
+        {"TC.output": "Target Behavior.CoS node[OUTPUT].sigmoided activation"},
+
+        {"TFI.activation": "Target Field & Target Production Nodes.intention node[BUFFER].activation"},
+        {"TFI.output": "Target Field & Target Production Nodes.intention node[OUTPUT].sigmoided activation"},
+        {"TFC.activation": "Target Field & Target Production Nodes.CoS node[BUFFER].activation"},
+        {"TFC.output": "Target Field & Target Production Nodes.CoS node[OUTPUT].sigmoided activation"},
+
+        {"TCI.activation": "Reference Memory Nodes & Color Field 2.intention node[BUFFER].activation"},
+        {"TCI.output": "Reference Memory Nodes & Color Field 2.intention node[OUTPUT].sigmoided activation"},
+        {"TCC.activation": "Reference Memory Nodes & Color Field 2.CoS node[BUFFER].activation"},
+        {"TCC.output": "Reference Memory Nodes & Color Field 2.CoS node[OUTPUT].sigmoided activation"},
+
+        {"TMI.activation": "Match Field.intention node[BUFFER].activation"},
+        {"TMI.output": "Match Field.intention node[OUTPUT].sigmoided activation"},
+        {"TMC.activation": "Match Field.CoS node[BUFFER].activation"},
+        {"TMC.output": "Match Field.CoS node[OUTPUT].sigmoided activation"}
+      ],
+        "plot configuration":
+        {
+          "autoscaling": "false",
+          "y axis limits":
+          {
+            "lower limit": "-10",
+            "upper limit": "10"
+          }
+        }
+    },
+    {
+      "row": "0",
+      "column": "3",
+      "column span": "1",
+      "type": "label",
+      "text": "target processes",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+
+    {
+      "row": "1",
+      "column": "4",
+      "column span": "1",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+        [
+        {"SI.activation": "Relational Behavior.intention node[BUFFER].activation"},
+        {"SI.output": "Relational Behavior.intention node[OUTPUT].sigmoided activation"},
+        {"SC.activation": "Relational Behavior.CoS node[BUFFER].activation"},
+        {"SC.output": "Relational Behavior.CoS node[OUTPUT].sigmoided activation"},
+
+        {"SFI.activation": "OC Field and Spatial Production Nodes  .intention node[BUFFER].activation"},
+        {"SFI.output": "OC Field and Spatial Production Nodes  .intention node[OUTPUT].sigmoided activation"},
+        {"SFC.activation": "OC Field and Spatial Production Nodes  .CoS node[BUFFER].activation"},
+        {"SFC.output": "OC Field and Spatial Production Nodes  .CoS node[OUTPUT].sigmoided activation"},
+
+        {"SCI.activation": "Condition of  Dissatisfaction .intention node[BUFFER].activation"},
+        {"SCI.output": "Condition of  Dissatisfaction .intention node[OUTPUT].sigmoided activation"},
+        {"SCC.activation": "Condition of  Dissatisfaction .CoS node[BUFFER].activation"},
+        {"SCC.output": "Condition of  Dissatisfaction .CoS node[OUTPUT].sigmoided activation"},
+
+        {"SMI.activation": "Spatial Memory Nodes.intention node[BUFFER].activation"},
+        {"SMI.output": "Spatial Memory Nodes.intention node[OUTPUT].sigmoided activation"},
+        {"SMC.activation": "Spatial Memory Nodes.CoS node[BUFFER].activation"},
+        {"SMC.output": "Spatial Memory Nodes.CoS node[OUTPUT].sigmoided activation"}
+      ],
+        "plot configuration":
+        {
+          "autoscaling": "false",
+          "y axis limits":
+          {
+            "lower limit": "-10",
+            "upper limit": "10"
+          }
+        }
+    },
+    {
+      "row": "0",
+      "column": "4",
+      "column span": "1",
+      "type": "label",
+      "text": "spatial processes",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+
+
+
+
+
+
+
+
+
+
+    {
+      "row": "3",
+      "column": "2",
+      "plot type": "cedar.aux.gui.MatrixPlot",
+      "data":
+      [
+        {"field.activation": "Colour[BUFFER].activation"},
+        {"field.activation": "Colour[OUTPUT].sigmoided activation"}
+      ],
+        "plot configuration":
+        {
+          "autoscaling": "false",
+          "y axis limits":
+          {
+            "lower limit": "-10",
+            "upper limit": "10"
+          }
+        }
+    },
+
+    {
+      "row": "3",
+      "column": "3",
+      "plot type": "cedar.aux.gui.ImagePlot",
+      "data": "Projection[OUTPUT].output"
+    },
+    {
+      "row": "3",
+      "column": "4",
+      "plot type": "cedar.aux.gui.ImagePlot",
+      "data": "Indeterminent [BUFFER].activation",
+      "plot configuration":
+      {
+          "autoscaling": "false",
+          "z axis limits":
+          {
+            "lower limit": "-10",
+            "upper limit": "10"
+          }
+      }
+
+    },
+
+	{
+      "row": "2",
+      "column": "2",
+      "type": "label",
+      "text": "color attention",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "2",
+      "column": "3",
+      "type": "label",
+      "text": "attention (space)",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "2",
+      "column": "4",
+      "type": "label",
+      "text": "spatial scene representation",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+
+
+    {
+      "row": "5",
+      "column": "2",
+      "plot type": "cedar.aux.gui.ImagePlot",
+      "data": "Reference[BUFFER].activation"
+    },
+    {
+      "row": "5",
+      "column": "3",
+      "plot type": "cedar.aux.gui.ImagePlot",
+      "data": "Target[BUFFER].activation"
+    },
+    {
+      "row": "5",
+      "column": "4",
+      "plot type": "cedar.aux.gui.ImagePlot",
+      "data": "Object-centered [BUFFER].activation"
+    },
+
+	{
+      "row": "4",
+      "column": "2",
+      "type": "label",
+      "text": "reference",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "4",
+      "column": "3",
+      "type": "label",
+      "text": "target",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "4",
+      "column": "4",
+      "type": "label",
+      "text": "relational",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+
+
+    {
+      "row": "1",
+      "column": "0",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+      [
+        {"red.activation": "Reference Red Memory[BUFFER].activation"},
+        {"red.output": "Reference Red Memory[OUTPUT].sigmoided activation"},
+        {"blue.activation": "Reference Blue Memory[BUFFER].activation"},
+        {"blue.output": "Reference Blue Memory[OUTPUT].sigmoided activation"},
+        {"cyan.activation": "Reference Cyan Memory[BUFFER].activation"},
+        {"cyan.output": "Reference Cyan Memory[OUTPUT].sigmoided activation"},
+        {"green.activation": "Reference Green Memory[BUFFER].activation"},
+        {"green.output": "Reference Green Memory[OUTPUT].sigmoided activation"},
+        {"orange.activation": "Reference Orange Memory[BUFFER].activation"},
+        {"orange.output": "Reference Orange Memory[OUTPUT].sigmoided activation"}
+      ],
+      "plot configuration":
+      {
+        "autoscaling": "false",
+        "y axis limits":
+        {
+          "lower limit": "-10",
+          "upper limit": "20"
+        },
+		"apply y axis limits": "true"
+      }
+    },
+    {
+      "row": "3",
+      "column": "0",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+      [
+        {"left.activation": "To the left of Memory[BUFFER].activation"},
+        {"left.output": "To the left of Memory[OUTPUT].sigmoided activation"},
+        {"right.activation": "To the Right of Memory[BUFFER].activation"},
+        {"right.output": "To the Right of Memory[OUTPUT].sigmoided activation"},
+        {"above.activation": "Above Memory[BUFFER].activation"},
+        {"above.output": "Above Memory[OUTPUT].sigmoided activation"},
+        {"below.activation": "Below Memory[BUFFER].activation"},
+        {"below.output": "Below Memory[OUTPUT].sigmoided activation"}
+      ],
+      "plot configuration":
+      {
+        "autoscaling": "false",
+        "y axis limits":
+        {
+          "lower limit": "-10",
+          "upper limit": "25"
+        },
+		"apply y axis limits": "true"
+      }
+    },
+    {
+      "row": "5",
+      "column": "0",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+      [
+        {"red.activation": "Target Red Memory[BUFFER].activation"},
+        {"red.output": "Target Red Memory[OUTPUT].sigmoided activation"},
+        {"blue.activation": "Target Blue Memory[BUFFER].activation"},
+        {"blue.output": "Target Blue Memory[OUTPUT].sigmoided activation"},
+        {"cyan.activation": "Target Cyan Memory[BUFFER].activation"},
+        {"cyan.output": "Target Cyan Memory[OUTPUT].sigmoided activation"},
+        {"green.activation": "Target Green Memory[BUFFER].activation"},
+        {"green.output": "Target Green Memory[OUTPUT].sigmoided activation"},
+        {"orange.activation": "Target Orange Memory [BUFFER].activation"},
+        {"orange.output": "Target Orange Memory [OUTPUT].sigmoided activation"}
+      ],
+      "plot configuration":
+      {
+        "autoscaling": "false",
+        "y axis limits":
+        {
+          "lower limit": "-10",
+          "upper limit": "20"
+        },
+		"apply y axis limits": "true"
+      }
+    },
+
+	{
+      "row": "0",
+      "column": "0",
+      "type": "label",
+      "text": "reference color memory",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "2",
+      "column": "0",
+      "type": "label",
+      "text": "spatial relation memory",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "4",
+      "column": "0",
+      "type": "label",
+      "text": "target color memory",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+
+
+
+    {
+      "row": "1",
+      "column": "1",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+      [
+        {"red.activation": "Reference Red Production[BUFFER].activation"},
+        {"red.output": "Reference Red Production[OUTPUT].sigmoided activation"},
+        {"blue.activation": "Reference Blue Production[BUFFER].activation"},
+        {"blue.output": "Reference Blue Production[OUTPUT].sigmoided activation"},
+        {"cyan.activation": "Reference Cyan Production[BUFFER].activation"},
+        {"cyan.output": "Reference Cyan Production[OUTPUT].sigmoided activation"},
+        {"green.activation": "Reference Green Production[BUFFER].activation"},
+        {"green.output": "Reference Green Production[OUTPUT].sigmoided activation"},
+        {"orange.activation": "Reference Orange Production[BUFFER].activation"},
+        {"orange.output": "Reference Orange Production[OUTPUT].sigmoided activation"}
+      ],
+      "plot configuration":
+      {
+        "autoscaling": "false",
+        "y axis limits":
+        {
+          "lower limit": "-10",
+          "upper limit": "20"
+        },
+		"apply y axis limits": "true"
+      }
+    },
+    {
+      "row": "3",
+      "column": "1",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+      [
+        {"left.activation": "To the left of Production[BUFFER].activation"},
+        {"left.output": "To the left of Production[OUTPUT].sigmoided activation"},
+        {"right.activation": "To the Right of Production[BUFFER].activation"},
+        {"right.output": "To the Right of Production[OUTPUT].sigmoided activation"},
+        {"above.activation": "Above Production[BUFFER].activation"},
+        {"above.output": "Above Production[OUTPUT].sigmoided activation"},
+        {"below.activation": "Below Production[BUFFER].activation"},
+        {"below.output": "Below Production[OUTPUT].sigmoided activation"}
+      ],
+      "plot configuration":
+      {
+        "autoscaling": "false",
+        "y axis limits":
+        {
+          "lower limit": "-10",
+          "upper limit": "25"
+        },
+		"apply y axis limits": "true"
+      }
+    },
+    {
+      "row": "5",
+      "column": "1",
+      "plot type": "cedar.aux.gui.Multi0DPlot",
+      "data":
+      [
+        {"red.activation": "Target Red Production[BUFFER].activation"},
+        {"red.output": "Target Red Production[OUTPUT].sigmoided activation"},
+        {"blue.activation": "Target Blue Production[BUFFER].activation"},
+        {"blue.output": "Target Blue Production[OUTPUT].sigmoided activation"},
+        {"cyan.activation": "Target Cyan Production[BUFFER].activation"},
+        {"cyan.output": "Target Cyan Production[OUTPUT].sigmoided activation"},
+        {"green.activation": "Target Green Production[BUFFER].activation"},
+        {"green.output": "Target Green Production[OUTPUT].sigmoided activation"},
+        {"orange.activation": "Target Orange Production[BUFFER].activation"},
+        {"orange.output": "Target Orange Production[OUTPUT].sigmoided activation"}
+      ],
+      "plot configuration":
+      {
+        "autoscaling": "false",
+        "y axis limits":
+        {
+          "lower limit": "-10",
+          "upper limit": "20"
+        },
+		"apply y axis limits": "true"
+      }
+    },
+
+	{
+      "row": "0",
+      "column": "1",
+      "type": "label",
+      "text": "reference color production",
+      "row stretch": "0",
+      "style sheet": "font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "2",
+      "column": "1",
+      "type": "label",
+      "text": "spatial relation production",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    },
+	{
+      "row": "4",
+      "column": "1",
+      "type": "label",
+      "text": "target color production",
+      "row stretch": "0",
+      "style sheet": " font: 14px; qproperty-alignment: AlignCenter;"
+    }
+
+
+  ]
+}
