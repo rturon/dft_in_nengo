@@ -68,6 +68,17 @@
             "comments": ""
         },
         "cedar.processing.Projection": {
+            "name": "Projection",
+            "dimension mapping": {
+                "0": "4294967295",
+                "1": "4294967295"
+            },
+            "output dimensionality": "0",
+            "output dimension sizes": "",
+            "compression type": "MAXIMUM",
+            "comments": ""
+        },
+        "cedar.processing.Projection": {
             "name": "Projection 0 to 1",
             "dimension mapping": "",
             "output dimensionality": "1",
@@ -200,6 +211,10 @@
         {
             "source": "Boost.boost",
             "target": "Projection 0 to 2.input"
+        },
+        {
+            "source": "Box Input 2.box input",
+            "target": "Projection.input"
         }
     ],
     "name": "",
@@ -213,8 +228,8 @@
             "display style": "ICON_ONLY",
             "width": "40",
             "height": "40",
-            "positionX": "-810",
-            "positionY": "810"
+            "positionX": "-780",
+            "positionY": "930"
         },
         {
             "type": "step",
@@ -241,7 +256,16 @@
             "width": "40",
             "height": "40",
             "positionX": "-810",
-            "positionY": "540"
+            "positionY": "690"
+        },
+        {
+            "type": "step",
+            "step": "Projection",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "-600",
+            "positionY": "480"
         },
         {
             "type": "step",
@@ -249,8 +273,8 @@
             "display style": "ICON_ONLY",
             "width": "40",
             "height": "40",
-            "positionX": "-630",
-            "positionY": "750"
+            "positionX": "-600",
+            "positionY": "870"
         },
         {
             "type": "step",
@@ -258,8 +282,8 @@
             "display style": "ICON_ONLY",
             "width": "40",
             "height": "40",
-            "positionX": "-630",
-            "positionY": "870"
+            "positionX": "-600",
+            "positionY": "990"
         },
         {
             "type": "step",
@@ -304,7 +328,7 @@
             "width": "40",
             "height": "40",
             "positionX": "-600",
-            "positionY": "480"
+            "positionY": "630"
         },
         {
             "type": "step",
@@ -313,63 +337,29 @@
             "width": "40",
             "height": "40",
             "positionX": "-600",
-            "positionY": "600"
+            "positionY": "750"
         }
     ],
     "ui view": {
         "ScrollBarX": "0",
-        "ScrollBarY": "261",
+        "ScrollBarY": "482",
         "SliderPosX": "0",
-        "SliderPosY": "261",
+        "SliderPosY": "482",
         "Zoom": "0.84999999999999998"
     },
     "ui generic": {
         "group": "",
         "open plots": {
-            "Box InputWidget0": {
-                "step": "Box Input",
-                "position_x": "443",
-                "position_y": "1721",
-                "width": "212",
-                "height": "202",
-                "position_relative_x": "0.23072916666666668",
-                "position_relative_y": "1.6692531522793403",
-                "width_relative": "0.11041666666666666",
-                "height_relative": "0.19592628516003879",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "box input",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "autoscaling": "true",
-                            "major grid visible": "false",
-                            "minor grid visible": "false",
-                            "y axis limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            }
-                        }
-                    }
-                ]
-            },
-            "Projection 2 to 0Widget0": {
-                "step": "Projection 2 to 0",
-                "position_x": "1214",
-                "position_y": "1876",
-                "width": "307",
-                "height": "202",
-                "position_relative_x": "0.6322916666666667",
-                "position_relative_y": "1.8195926285160038",
-                "width_relative": "0.15989583333333332",
-                "height_relative": "0.19592628516003879",
+            "ProjectionWidget0": {
+                "step": "Projection",
+                "position_x": "1718",
+                "position_y": "2096",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "1.0598396051819865",
+                "position_relative_y": "2.0773042616451933",
+                "width_relative": "0.12338062924120913",
+                "height_relative": "0.19821605550049554",
                 "data_list": [
                     {
                         "id": "OUTPUT",
@@ -394,166 +384,20 @@
                     }
                 ]
             },
-            "Projection 0 to 1Widget0": {
-                "step": "Projection 0 to 1",
-                "position_x": "955",
-                "position_y": "2030",
-                "width": "212",
-                "height": "202",
-                "position_relative_x": "0.49739583333333331",
-                "position_relative_y": "1.9689621726479147",
-                "width_relative": "0.11041666666666666",
-                "height_relative": "0.19592628516003879",
+            "ProjectionWidget1": {
+                "step": "Projection",
+                "position_x": "1502",
+                "position_y": "2082",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.92658852560148053",
+                "position_relative_y": "2.0634291377601586",
+                "width_relative": "0.12338062924120913",
+                "height_relative": "0.19821605550049554",
                 "data_list": [
                     {
-                        "id": "OUTPUT",
-                        "name": "output",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "autoscaling": "true",
-                            "major grid visible": "false",
-                            "minor grid visible": "false",
-                            "y axis limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            }
-                        }
-                    }
-                ]
-            },
-            "Projection 2 to 3Widget0": {
-                "step": "Projection 2 to 3",
-                "position_x": "1209",
-                "position_y": "2072",
-                "width": "307",
-                "height": "203",
-                "position_relative_x": "0.62968749999999996",
-                "position_relative_y": "2.0096993210475267",
-                "width_relative": "0.15989583333333332",
-                "height_relative": "0.19689621726479145",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "output",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "smooth scaling": "true",
-                            "keep aspect ratio": "true",
-                            "automatic value scaling": "true",
-                            "show legend": "true",
-                            "value limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            },
-                            "color jet": "PlotDefault",
-                            "sliced dimension": "2",
-                            "desired columns": "9"
-                        }
-                    }
-                ]
-            },
-            "Projection 3 to 2Widget0": {
-                "step": "Projection 3 to 2",
-                "position_x": "1540",
-                "position_y": "1979",
-                "width": "307",
-                "height": "202",
-                "position_relative_x": "0.80208333333333337",
-                "position_relative_y": "1.9194956353055286",
-                "width_relative": "0.15989583333333332",
-                "height_relative": "0.19592628516003879",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "output",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "smooth scaling": "true",
-                            "keep aspect ratio": "true",
-                            "automatic value scaling": "true",
-                            "show legend": "true",
-                            "value limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            },
-                            "color jet": "PlotDefault"
-                        }
-                    }
-                ]
-            },
-            "Projection 1 to 3Widget0": {
-                "step": "Projection 1 to 3",
-                "position_x": "1222",
-                "position_y": "1672",
-                "width": "307",
-                "height": "202",
-                "position_relative_x": "0.63645833333333335",
-                "position_relative_y": "1.6217264791464598",
-                "width_relative": "0.15989583333333332",
-                "height_relative": "0.19592628516003879",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "output",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "smooth scaling": "true",
-                            "keep aspect ratio": "true",
-                            "automatic value scaling": "true",
-                            "show legend": "true",
-                            "value limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            },
-                            "color jet": "PlotDefault",
-                            "sliced dimension": "2",
-                            "desired columns": "8"
-                        }
-                    }
-                ]
-            },
-            "Projection 0 to 2Widget0": {
-                "step": "Projection 0 to 2",
-                "position_x": "957",
-                "position_y": "2268",
-                "width": "212",
-                "height": "202",
-                "position_relative_x": "0.49843749999999998",
-                "position_relative_y": "2.1998060135790496",
-                "width_relative": "0.11041666666666666",
-                "height_relative": "0.19592628516003879",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "output",
+                        "id": "INPUT",
+                        "name": "input",
                         "ignoreIfMissing": "false",
                         "plotDeclaration": "cedar::aux::gui::MatDataPlot"
                     }
@@ -578,14 +422,14 @@
             },
             "Projection 3 to 1Widget0": {
                 "step": "Projection 3 to 1",
-                "position_x": "1539",
-                "position_y": "1765",
-                "width": "307",
-                "height": "202",
-                "position_relative_x": "0.80156249999999996",
-                "position_relative_y": "1.7119301648884577",
-                "width_relative": "0.15989583333333332",
-                "height_relative": "0.19592628516003879",
+                "position_x": "1580",
+                "position_y": "1835",
+                "width": "200",
+                "height": "200",
+                "position_relative_x": "0.97470697100555215",
+                "position_relative_y": "1.8186323092170467",
+                "width_relative": "0.12338062924120913",
+                "height_relative": "0.19821605550049554",
                 "data_list": [
                     {
                         "id": "OUTPUT",
@@ -606,114 +450,6 @@
                                 "lower limit": "0",
                                 "upper limit": "1"
                             }
-                        }
-                    }
-                ]
-            },
-            "Projection 1 to 0Widget0": {
-                "step": "Projection 1 to 0",
-                "position_x": "1220",
-                "position_y": "1466",
-                "width": "307",
-                "height": "202",
-                "position_relative_x": "0.63541666666666663",
-                "position_relative_y": "1.4219204655674103",
-                "width_relative": "0.15989583333333332",
-                "height_relative": "0.19592628516003879",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "output",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "autoscaling": "true",
-                            "major grid visible": "false",
-                            "minor grid visible": "false",
-                            "y axis limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            }
-                        }
-                    }
-                ]
-            },
-            "Box Input 3Widget0": {
-                "step": "Box Input 3",
-                "position_x": "454",
-                "position_y": "2184",
-                "width": "212",
-                "height": "202",
-                "position_relative_x": "0.23645833333333333",
-                "position_relative_y": "2.1183317167798252",
-                "width_relative": "0.11041666666666666",
-                "height_relative": "0.19592628516003879",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "box input",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "smooth scaling": "true",
-                            "keep aspect ratio": "true",
-                            "automatic value scaling": "true",
-                            "show legend": "true",
-                            "value limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            },
-                            "color jet": "PlotDefault",
-                            "sliced dimension": "2",
-                            "desired columns": "8"
-                        }
-                    }
-                ]
-            },
-            "Box Input 2Widget0": {
-                "step": "Box Input 2",
-                "position_x": "446",
-                "position_y": "1957",
-                "width": "212",
-                "height": "202",
-                "position_relative_x": "0.23229166666666667",
-                "position_relative_y": "1.89815712900097",
-                "width_relative": "0.11041666666666666",
-                "height_relative": "0.19592628516003879",
-                "data_list": [
-                    {
-                        "id": "OUTPUT",
-                        "name": "box input",
-                        "ignoreIfMissing": "false",
-                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
-                    }
-                ],
-                "plot configurations": [
-                    {
-                        "row": "1",
-                        "col": "0",
-                        "plot configuration": {
-                            "smooth scaling": "true",
-                            "keep aspect ratio": "true",
-                            "automatic value scaling": "true",
-                            "show legend": "true",
-                            "value limits": {
-                                "lower limit": "0",
-                                "upper limit": "1"
-                            },
-                            "color jet": "PlotDefault"
                         }
                     }
                 ]
