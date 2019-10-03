@@ -1,0 +1,482 @@
+{
+    "meta": {
+        "format": "1"
+    },
+    "steps": {
+        "cedar.processing.sources.LinearSpatialTemplate": {
+            "name": "Linear Spatial Template",
+            "size x": "50",
+            "size y": "50",
+            "lowest": "0",
+            "upmost": "10",
+            "comments": ""
+        },
+        "cedar.processing.Projection": {
+            "name": "Projection",
+            "dimension mapping": {
+                "0": "0",
+                "1": "4294967295"
+            },
+            "output dimensionality": "1",
+            "output dimension sizes": [
+                "50"
+            ],
+            "compression type": "MAXIMUM",
+            "comments": ""
+        },
+        "cedar.processing.Projection": {
+            "name": "Projection 2",
+            "dimension mapping": {
+                "0": "4294967295",
+                "1": "0"
+            },
+            "output dimensionality": "1",
+            "output dimension sizes": [
+                "50"
+            ],
+            "compression type": "MAXIMUM",
+            "comments": ""
+        },
+        "cedar.processing.sources.SpatialTemplate": {
+            "name": "Spatial Template",
+            "size x": "50",
+            "size y": "50",
+            "invert sides": "false",
+            "horizontal pattern": "false",
+            "sigma th hor": "0.25",
+            "mu r": "15",
+            "sigma r": "100",
+            "sigma sigmoid fw": "0",
+            "sigmoid": {
+                "type": "cedar.aux.math.AbsSigmoid",
+                "threshold": "0",
+                "beta": "100"
+            },
+            "comments": ""
+        }
+    },
+    "triggers": {
+        "cedar.processing.LoopedTrigger": {
+            "name": "default trigger",
+            "step size": "0.02 s",
+            "fake Euler step size": "0.02 s",
+            "minimum sleep time": "0.0002 s",
+            "idle time": "1e-05 s",
+            "simulated time": "0.001 s",
+            "loop mode": "real deltaT",
+            "start with all": "true",
+            "listeners": [
+                "Group 2",
+                "Group 1"
+            ]
+        }
+    },
+    "groups": {
+        "Group 1": {
+            "meta": {
+                "format": "1"
+            },
+            "steps": {
+                "cedar.processing.ComponentMultiply": {
+                    "name": "Component Multiply",
+                    "comments": ""
+                },
+                "cedar.dynamics.NeuralField": {
+                    "name": "Neural Field",
+                    "activation as output": "false",
+                    "discrete metric (workaround)": "false",
+                    "update stepIcon according to output": "true",
+                    "threshold for updating the stepIcon": "0.80000000000000004",
+                    "dimensionality": "2",
+                    "sizes": [
+                        "50",
+                        "50"
+                    ],
+                    "time scale": "100",
+                    "resting level": "-5",
+                    "input noise gain": "0.10000000000000001",
+                    "sigmoid": {
+                        "type": "cedar.aux.math.AbsSigmoid",
+                        "threshold": "0",
+                        "beta": "100"
+                    },
+                    "global inhibition": "-0.01",
+                    "lateral kernels": {
+                        "cedar.aux.kernel.Gauss": {
+                            "dimensionality": "2",
+                            "anchor": [
+                                "0",
+                                "0"
+                            ],
+                            "amplitude": "1",
+                            "sigmas": [
+                                "3",
+                                "3"
+                            ],
+                            "normalize": "true",
+                            "shifts": [
+                                "0",
+                                "0"
+                            ],
+                            "limit": "5"
+                        }
+                    },
+                    "lateral kernel convolution": {
+                        "borderType": "Zero",
+                        "mode": "Same",
+                        "engine": {
+                            "type": "cedar.aux.conv.OpenCV"
+                        },
+                        "alternate even kernel center": "false"
+                    },
+                    "noise correlation kernel": {
+                        "dimensionality": "2",
+                        "anchor": [
+                            "0",
+                            "0"
+                        ],
+                        "amplitude": "0",
+                        "sigmas": [
+                            "3",
+                            "3"
+                        ],
+                        "normalize": "true",
+                        "shifts": [
+                            "0",
+                            "0"
+                        ],
+                        "limit": "5"
+                    },
+                    "comments": ""
+                },
+                "cedar.processing.StaticGain": {
+                    "name": "Static Gain",
+                    "gain factor": "2",
+                    "comments": ""
+                }
+            },
+            "connections": [
+                {
+                    "source": "Component Multiply.product",
+                    "target": "Neural Field.input"
+                },
+                {
+                    "source": "external input.output",
+                    "target": "Component Multiply.operands"
+                },
+                {
+                    "source": "external input 2.output",
+                    "target": "Component Multiply.operands"
+                },
+                {
+                    "source": "Neural Field.sigmoided activation",
+                    "target": "external output.input"
+                },
+                {
+                    "source": "external input 2.output",
+                    "target": "Static Gain.input"
+                },
+                {
+                    "source": "Static Gain.output",
+                    "target": "Neural Field.input"
+                }
+            ],
+            "name": "Group 1",
+            "connectors": {
+                "external input": "true",
+                "external input 2": "true",
+                "external input 4": "true",
+                "external output": "false"
+            },
+            "is looped": "true",
+            "time factor": "1",
+            "ui": [
+                {
+                    "type": "step",
+                    "step": "Component Multiply",
+                    "display style": "ICON_ONLY",
+                    "width": "40",
+                    "height": "40",
+                    "positionX": "60",
+                    "positionY": "30"
+                },
+                {
+                    "type": "step",
+                    "step": "Neural Field",
+                    "display style": "ICON_AND_TEXT",
+                    "width": "160",
+                    "height": "50",
+                    "positionX": "150",
+                    "positionY": "60"
+                },
+                {
+                    "type": "step",
+                    "step": "Static Gain",
+                    "display style": "ICON_ONLY",
+                    "width": "40",
+                    "height": "40",
+                    "positionX": "60",
+                    "positionY": "90"
+                }
+            ],
+            "ui generic": {
+                "group": "Group 1",
+                "architecture widgets": "",
+                "robots": "",
+                "width": "400",
+                "height": "150",
+                "smart mode": "false",
+                "collapsed": "false",
+                "lock geometry": "false",
+                "uncollapsed width": "400",
+                "uncollapsed height": "150",
+                "positionX": "-390",
+                "positionY": "-90"
+            }
+        },
+        "Group 2": {
+            "meta": {
+                "format": "1"
+            },
+            "steps": {
+                "cedar.processing.sources.GaussInput": {
+                    "name": "Gauss Input",
+                    "dimensionality": "2",
+                    "sizes": [
+                        "50",
+                        "50"
+                    ],
+                    "amplitude": "6",
+                    "centers": [
+                        "10",
+                        "10"
+                    ],
+                    "sigma": [
+                        "10",
+                        "7"
+                    ],
+                    "cyclic": "false",
+                    "comments": ""
+                },
+                "cedar.dynamics.NeuralField": {
+                    "name": "Neural Field 2",
+                    "activation as output": "false",
+                    "discrete metric (workaround)": "false",
+                    "update stepIcon according to output": "true",
+                    "threshold for updating the stepIcon": "0.80000000000000004",
+                    "dimensionality": "2",
+                    "sizes": [
+                        "50",
+                        "50"
+                    ],
+                    "time scale": "100",
+                    "resting level": "-5",
+                    "input noise gain": "0.10000000000000001",
+                    "sigmoid": {
+                        "type": "cedar.aux.math.AbsSigmoid",
+                        "threshold": "0",
+                        "beta": "100"
+                    },
+                    "global inhibition": "-0.01",
+                    "lateral kernels": {
+                        "cedar.aux.kernel.Gauss": {
+                            "dimensionality": "2",
+                            "anchor": [
+                                "0",
+                                "0"
+                            ],
+                            "amplitude": "1",
+                            "sigmas": [
+                                "3",
+                                "3"
+                            ],
+                            "normalize": "true",
+                            "shifts": [
+                                "0",
+                                "0"
+                            ],
+                            "limit": "5"
+                        }
+                    },
+                    "lateral kernel convolution": {
+                        "borderType": "Zero",
+                        "mode": "Same",
+                        "engine": {
+                            "type": "cedar.aux.conv.OpenCV"
+                        },
+                        "alternate even kernel center": "false"
+                    },
+                    "noise correlation kernel": {
+                        "dimensionality": "2",
+                        "anchor": [
+                            "0",
+                            "0"
+                        ],
+                        "amplitude": "0",
+                        "sigmas": [
+                            "3",
+                            "3"
+                        ],
+                        "normalize": "true",
+                        "shifts": [
+                            "0",
+                            "0"
+                        ],
+                        "limit": "5"
+                    },
+                    "comments": ""
+                }
+            },
+            "connections": [
+                {
+                    "source": "Gauss Input.Gauss input",
+                    "target": "Neural Field 2.input"
+                },
+                {
+                    "source": "external input 3.output",
+                    "target": "Neural Field 2.input"
+                },
+                {
+                    "source": "Neural Field 2.sigmoided activation",
+                    "target": "external output 2.input"
+                }
+            ],
+            "name": "Group 2",
+            "connectors": {
+                "external input 3": "true",
+                "external output 2": "false"
+            },
+            "is looped": "true",
+            "time factor": "1",
+            "ui": [
+                {
+                    "type": "step",
+                    "step": "Gauss Input",
+                    "display style": "ICON_ONLY",
+                    "width": "40",
+                    "height": "40",
+                    "positionX": "60",
+                    "positionY": "90"
+                },
+                {
+                    "type": "step",
+                    "step": "Neural Field 2",
+                    "display style": "ICON_AND_TEXT",
+                    "width": "160",
+                    "height": "50",
+                    "positionX": "210",
+                    "positionY": "90"
+                }
+            ],
+            "ui generic": {
+                "group": "Group 2",
+                "architecture widgets": "",
+                "robots": "",
+                "width": "400",
+                "height": "150",
+                "smart mode": "false",
+                "collapsed": "false",
+                "lock geometry": "false",
+                "uncollapsed width": "400",
+                "uncollapsed height": "150",
+                "positionX": "90",
+                "positionY": "-60"
+            }
+        }
+    },
+    "connections": [
+        {
+            "source": "Linear Spatial Template.spatial pattern",
+            "target": "Group 1.external input"
+        },
+        {
+            "source": "Spatial Template.spatial pattern",
+            "target": "Group 1.external input 2"
+        },
+        {
+            "source": "Group 1.external output",
+            "target": "Group 2.external input 3"
+        },
+        {
+            "source": "Group 2.external output 2",
+            "target": "Projection.input"
+        },
+        {
+            "source": "Group 2.external output 2",
+            "target": "Projection 2.input"
+        }
+    ],
+    "name": "",
+    "connectors": "",
+    "is looped": "true",
+    "time factor": "1",
+    "ui": [
+        {
+            "type": "step",
+            "step": "Linear Spatial Template",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "-540",
+            "positionY": "-90"
+        },
+        {
+            "type": "step",
+            "step": "Projection",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "540",
+            "positionY": "-60"
+        },
+        {
+            "type": "step",
+            "step": "Projection 2",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "540",
+            "positionY": "30"
+        },
+        {
+            "type": "step",
+            "step": "Spatial Template",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "-540",
+            "positionY": "30"
+        },
+        {
+            "type": "trigger",
+            "trigger": "default trigger",
+            "width": "30",
+            "height": "30",
+            "positionX": "0",
+            "positionY": "0"
+        }
+    ],
+    "ui view": {
+        "ScrollBarX": "0",
+        "ScrollBarY": "0",
+        "SliderPosX": "0",
+        "SliderPosY": "0",
+        "Zoom": "0.97999999999999998"
+    },
+    "ui generic": {
+        "group": "",
+        "open plots": "",
+        "plot groups": "",
+        "architecture widgets": "",
+        "robots": "",
+        "width": "250",
+        "height": "250",
+        "smart mode": "false",
+        "collapsed": "false",
+        "lock geometry": "false",
+        "uncollapsed width": "250",
+        "uncollapsed height": "250",
+        "positionX": "0",
+        "positionY": "0"
+    }
+}
