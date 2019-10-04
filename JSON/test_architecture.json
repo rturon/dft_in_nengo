@@ -3,6 +3,14 @@
         "format": "1"
     },
     "steps": {
+        "cedar.processing.Flip": {
+            "name": "Flip",
+            "flipped dimensions": [
+                "true",
+                "true"
+            ],
+            "comments": ""
+        },
         "cedar.processing.sources.LinearSpatialTemplate": {
             "name": "Linear Spatial Template",
             "size x": "50",
@@ -179,6 +187,10 @@
                 {
                     "source": "Static Gain.output",
                     "target": "Neural Field.input"
+                },
+                {
+                    "source": "Static Gain.output",
+                    "target": "external output 3.input"
                 }
             ],
             "name": "Group 1",
@@ -186,7 +198,8 @@
                 "external input": "true",
                 "external input 2": "true",
                 "external input 4": "true",
-                "external output": "false"
+                "external output": "false",
+                "external output 3": "false"
             },
             "is looped": "true",
             "time factor": "1",
@@ -207,7 +220,7 @@
                     "width": "160",
                     "height": "50",
                     "positionX": "150",
-                    "positionY": "60"
+                    "positionY": "30"
                 },
                 {
                     "type": "step",
@@ -215,21 +228,21 @@
                     "display style": "ICON_ONLY",
                     "width": "40",
                     "height": "40",
-                    "positionX": "60",
-                    "positionY": "90"
+                    "positionX": "90",
+                    "positionY": "180"
                 }
             ],
             "ui generic": {
                 "group": "Group 1",
                 "architecture widgets": "",
                 "robots": "",
-                "width": "400",
-                "height": "150",
+                "width": "390",
+                "height": "240",
                 "smart mode": "false",
                 "collapsed": "false",
                 "lock geometry": "false",
-                "uncollapsed width": "400",
-                "uncollapsed height": "150",
+                "uncollapsed width": "390",
+                "uncollapsed height": "240",
                 "positionX": "-390",
                 "positionY": "-90"
             }
@@ -404,6 +417,10 @@
         {
             "source": "Group 2.external output 2",
             "target": "Projection 2.input"
+        },
+        {
+            "source": "Group 1.external output 3",
+            "target": "Flip.input"
         }
     ],
     "name": "",
@@ -411,6 +428,15 @@
     "is looped": "true",
     "time factor": "1",
     "ui": [
+        {
+            "type": "step",
+            "step": "Flip",
+            "display style": "ICON_ONLY",
+            "width": "40",
+            "height": "40",
+            "positionX": "30",
+            "positionY": "120"
+        },
         {
             "type": "step",
             "step": "Linear Spatial Template",
@@ -457,9 +483,9 @@
         }
     ],
     "ui view": {
-        "ScrollBarX": "0",
+        "ScrollBarX": "-529",
         "ScrollBarY": "0",
-        "SliderPosX": "0",
+        "SliderPosX": "-529",
         "SliderPosY": "0",
         "Zoom": "0.97999999999999998"
     },

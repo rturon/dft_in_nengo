@@ -58,7 +58,10 @@ def fetch_objects(json_as_list):
             obj[1][0] = ('name', group[0] + "." + obj[1][0][1])
             objects.append(obj)
             
-    return objects
+    object_dict = {}
+    for obj in objects:
+        object_dict[obj[1][0][1]] = obj
+    return object_dict
 
 
 def fetch_connections(json_as_list):
@@ -214,3 +217,69 @@ def fetch_connections(json_as_list):
     _ = [connections_outside_groups.extend(cons) for cons in group_connections.values()]
 
     return connections_outside_groups
+
+
+def get_size_param(obj):
+    if any(['size y' in tpl[0] for tpl in obj[1]]):
+        ind = [i for i, elem in enumerate(obj[1]) if elem[0] == 'size y'][0]
+        sizes = ('sizes', [obj[1][ind-1][1],obj[1][ind][1]])
+    elif any(['output dimension sizes' in tpl[0] for tpl in obj[1]]):
+        ind = [i for i, elem in enumerate(obj[1]) if elem[0] == 'output dimension sizes'][0]
+        sizes = ('sizes', obj[1][ind][1])
+    elif any(['sizes' in tpl[0] for tpl in obj[1]]):
+        ind = [i for i, elem in enumerate(obj[1]) if elem[0] == 'sizes'][0]
+        sizes = ('sizes', obj[1][ind][1])
+    else:
+        raise Exception('The object %s does not have a size parameter!' %obj[1][0][1])
+    return sizes
+
+
+def backtrace_size(obj, connections, objects_dict, obj_wo_size):
+    obj_wo_sizes = ['cedar.processing.Projection', 'cedar.processing.ComponentMultiply',
+                    'cedar.processing.steps.Convolution', 'cedar.processing.Flip',
+                    'cedar.processing.StaticGain']
+    
+    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes']
+
+    source = None
+    for connection in connections:
+        # test if obj is target of connection
+        if obj[1][0][1] + "." in connection[1][1]:
+            source_name = connection[0][1].rsplit('.',1)[0]
+            source = objects_dict[source_name]
+            # check if the source has some size parameter
+            if any([size_param in object_param for size_param in size_params 
+                    for object_param in source[1]]):
+                sizes = get_size_param(source)
+                obj_wo_size[1].append(sizes)
+                return None
+            
+    # if no source was an object with size, go deeper, for simplicity take last source
+    if source is not None:
+        backtrace_size(source, connections, objects_dict, obj_wo_size)
+    else:
+        # The object is not really connected to the architecture since the objects without
+        # a size parameter need some input to do something
+        print('The object %s does not have a source!' %obj[1][0][1])
+
+
+def load_from_json(filename):
+
+    # load the file as list of lists
+    json = read_JSON_as_list(filename)
+
+    # get the objects and connections
+    object_dict = fetch_objects(json)
+    connections = fetch_connections(json)
+
+    # add size parameter to objects without size parameter
+    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes']
+
+    for obj in object_dict.values():
+        has_size = any([size_param in object_param for size_param in size_params 
+                    for object_param in obj[1]])
+        if not has_size and obj[0] != 'cedar.processing.sources.Boost':
+            backtrace_size(obj, connections, object_dict, obj)
+
+    return object_dict, connections
+
