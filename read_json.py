@@ -218,17 +218,46 @@ def fetch_connections(json_as_list):
 
     return connections_outside_groups
 
+def create_size_param(obj, size_value, CM=False):
+    if not CM:
+        sizes = ('sizes', size_value)
+    else:
+        # check if CM already has one size param --> DOES NOT WORK LIKE THIS!!
+        # the obj here is the obj from which to get the size, not for which to
+        # get the size 
+        # solution: return it with 'inp size1' here and check if that's what's 
+        # needed in backtrace function
+        sizes = ('inp size1', size_value)
 
-def get_size_param(obj):
+    return sizes
+
+def get_size_param(obj, CM=False):
+    # TODO: add option for checking for ComponentMultiply sizes
+    # TODO: add option to add ComponentMultiply sizes instead of normal sizes
     if any(['size y' in tpl[0] for tpl in obj[1]]):
         ind = [i for i, elem in enumerate(obj[1]) if elem[0] == 'size y'][0]
-        sizes = ('sizes', [obj[1][ind-1][1],obj[1][ind][1]])
+        # sizes = ('sizes', [obj[1][ind-1][1],obj[1][ind][1]])
+        sizes = create_size_param(obj, [obj[1][ind-1][1],obj[1][ind][1]], CM=CM)
     elif any(['output dimension sizes' in tpl[0] for tpl in obj[1]]):
         ind = [i for i, elem in enumerate(obj[1]) if elem[0] == 'output dimension sizes'][0]
-        sizes = ('sizes', obj[1][ind][1])
+        # sizes = ('sizes', obj[1][ind][1])
+        sizes = create_size_param(obj, obj[1][ind][1], CM=CM)
     elif any(['sizes' in tpl[0] for tpl in obj[1]]):
         ind = [i for i, elem in enumerate(obj[1]) if elem[0] == 'sizes'][0]
-        sizes = ('sizes', obj[1][ind][1])
+        sizes = create_size_param(obj, obj[1][ind][1], CM=CM)
+    elif any(['inp size' in tpl[0] for tpl in obj[1]]):
+        # if the input is a ComponentMultiply then it's output size is the size
+        # of its higher dimensional input
+        # ind1 = [i for i, elem in enumerate(obj[1]) if elem[0] == 'inp size1'][0]
+        # ind2 = [i for i, elem in enumerate(obj[1]) if elem[0] == 'inp size2'][0]
+        print('Source is a CM object:', obj[1][0][1])
+        print(obj[1])
+        inp_size1 = [elem[1] for elem in obj[1] if elem[0] == 'inp size1'][0]
+        inp_size2 = [elem[1] for elem in obj[1] if elem[0] == 'inp size2'][0]
+        out_size = inp_size1 if len(inp_size1) >= len(inp_size2) else inp_size2
+        print('Input size 1 and 2:', inp_size1, inp_size2)
+        print('Used as output size:', out_size, '\n')
+        sizes = create_size_param(obj, out_size, CM=CM)
     else:
         raise Exception('The object %s does not have a size parameter!' %obj[1][0][1])
     return sizes
@@ -239,18 +268,23 @@ def backtrace_size(obj, connections, objects_dict, obj_wo_size):
                     'cedar.processing.steps.Convolution', 'cedar.processing.Flip',
                     'cedar.processing.StaticGain']
     
-    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes']
+    # TODO: add ComponentMultiply sizes to list
+    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes', 
+                   'inp size1', 'inp size2']
 
     source = None
     for connection in connections:
         # test if obj is target of connection
-        if obj[1][0][1] + "." in connection[1][1]:
+        if obj[1][0][1] == connection[1][1].rsplit('.',1)[0]:
             source_name = connection[0][1].rsplit('.',1)[0]
             source = objects_dict[source_name]
             # check if the source has some size parameter
             if any([size_param in object_param for size_param in size_params 
                     for object_param in source[1]]):
-                sizes = get_size_param(source)
+                if obj_wo_size[0] == "cedar.processing.ComponentMultiply":
+                    sizes = get_size_param(source, CM=True)
+                else:
+                    sizes = get_size_param(source)
                 obj_wo_size[1].append(sizes)
                 return None
             
@@ -261,6 +295,48 @@ def backtrace_size(obj, connections, objects_dict, obj_wo_size):
         # The object is not really connected to the architecture since the objects without
         # a size parameter need some input to do something
         print('The object %s does not have a source!' %obj[1][0][1])
+
+def backtrace_CM_size(cm_obj, connections, objects_dict):
+    # print('Trying to backtrace size for a CM object:', cm_obj[1][0][1])
+    # if the object to get the size for is a ComponentMultiply instance, 
+    # wee need to get the two input sizes for this object. 
+    # we can assume that it has exactly two inputs, not more or less
+    # but we still check if that's true
+    sources = []
+    # first just get the two sources
+    for connection in connections:
+        # test if obj is target of connection
+        if cm_obj[1][0][1] == connection[1][1].rsplit('.',1)[0]:
+            source_name = connection[0][1].rsplit('.',1)[0]
+            source = objects_dict[source_name]
+            sources.append(source)
+
+    if len(sources) != 2:
+        print('ComponentMultiply does not have 2 inputs, but %i!' %len(sources))
+        return None
+    
+    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes', 
+                   'inp size1', 'inp size2']
+    # now get the sizes from the sources
+    if any([size_param in object_param for size_param in size_params 
+            for object_param in sources[0][1]]):
+        # add the size as "inp size1"
+        inp_size1 = get_size_param(sources[0], CM=True)
+        cm_obj[1].append(inp_size1)
+    else:
+        # go deeper 
+        backtrace_size(sources[0], connections, objects_dict, cm_obj)
+    if any([size_param in object_param for size_param in size_params 
+            for object_param in sources[1][1]]):
+        # add the size as "inp size2"
+        inp_size2 = get_size_param(sources[1], CM=True)
+        inp_size2 = ('inp size2', inp_size2[1])
+        cm_obj[1].append(inp_size2)
+    else:
+        # go deeper
+        backtrace_size(sources[1], connections, objects_dict, cm_obj)
+    # we add a new size_param for the ComponentMultiplies, "inp size1" and 
+    # "inp size2"
 
 
 def load_from_json(filename):
@@ -273,13 +349,17 @@ def load_from_json(filename):
     connections = fetch_connections(json)
 
     # add size parameter to objects without size parameter
-    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes']
+    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes', 
+                   'inp size1', 'inp size2']
 
     for obj in object_dict.values():
         has_size = any([size_param in object_param for size_param in size_params 
                     for object_param in obj[1]])
         if not has_size and obj[0] != 'cedar.processing.sources.Boost':
-            backtrace_size(obj, connections, object_dict, obj)
+            if obj[0] != 'cedar.processing.ComponentMultiply':
+                backtrace_size(obj, connections, object_dict, obj)
+            else:
+                backtrace_CM_size(obj, connections, object_dict)
 
     return object_dict, connections
 
