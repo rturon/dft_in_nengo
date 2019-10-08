@@ -20,13 +20,13 @@ def one_dimensional_peak(p, std, a, size=10):
 
 def two_dimensional_peak(p, std, a, size=[10,10]):
     
-    x = np.arange(size[0])
-    y = np.arange(size[1])
+    x = np.arange(size[1])
+    y = np.arange(size[0])
     grid_x, grid_y = np.meshgrid(x, y)
     
 
-    activations = a * np.exp(-0.5*((grid_x - p[0])**2/std[0]**2 + \
-                                   (grid_y - p[1])**2/std[1]**2))
+    activations = a * np.exp(-0.5*((grid_x - p[1])**2/std[1]**2 + \
+                                   (grid_y - p[0])**2/std[0]**2))
 
     return activations
 
@@ -207,7 +207,11 @@ class NeuralField(object):
         The dimensionality of the Neural Field is read from the number
         of elements in the sizes parameter. 
     '''
-    def __init__(self, sizes, h, tau, kernel, 
+    def __init__(self, 
+                 sizes, 
+                 h, 
+                 tau, 
+                 kernel, 
                  c_glob=1, 
                  nonlinearity=AbsSigmoid(beta=100),
                  border_type='zero-filled borders',
@@ -366,17 +370,22 @@ class Projection(object):
 
 
 class Convolution(object):
-    def __init__(self, sizes, kernel, border_type):
+    ''' Has two inputs of same size: First input is the kernel for the 
+        convolution, second input is the matrix to convolve with. Since they
+        always have the same size in the spatial reasoning architecture I only
+        implemented this case here for simplicity. 
+    '''
+    def __init__(self, sizes, border_type):
         self.sizes = sizes
-        self.kernel = kernel
         self.border_type = border_type
         
     def update(self, inp):
-        out = inp.reshape(*self.sizes)
-        return pad_and_convolve(out, self.kernel(), self.border_type).flatten()
+        kernel = inp[:np.prod(self.sizes)].reshape(*self.sizes)
+        matrix = inp[np.prod(self.sizes):].reshape(*self.sizes)
+        return pad_and_convolve(matrix, kernel, self.border_type).flatten()
     
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes), 
+        return nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes)*2, 
                           size_out=np.prod(self.sizes))
 
     
