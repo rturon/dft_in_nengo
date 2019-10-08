@@ -283,6 +283,8 @@ def backtrace_size(obj, connections, objects_dict, obj_wo_size):
                     for object_param in source[1]]):
                 if obj_wo_size[0] == "cedar.processing.ComponentMultiply":
                     sizes = get_size_param(source, CM=True)
+                    if any(['inp size1' in tpl[0] for tpl in obj_wo_size[1]]):
+                        sizes = ('inp size2', sizes[1])
                 else:
                     sizes = get_size_param(source)
                 obj_wo_size[1].append(sizes)
@@ -297,8 +299,8 @@ def backtrace_size(obj, connections, objects_dict, obj_wo_size):
         print('The object %s does not have a source!' %obj[1][0][1])
 
 def backtrace_CM_size(cm_obj, connections, objects_dict):
-    # print('Trying to backtrace size for a CM object:', cm_obj[1][0][1])
-    # if the object to get the size for is a ComponentMultiply instance, 
+    # print('Trying to backtrace size for a CM object:', cm_objget_size_param[1][0][1])
+    # if the object to get the size for is a ComponentMultiply get_size_paraminstance, 
     # wee need to get the two input sizes for this object. 
     # we can assume that it has exactly two inputs, not more or less
     # but we still check if that's true
@@ -349,7 +351,8 @@ def load_from_json(filename):
     connections = fetch_connections(json)
 
     # add size parameter to objects without size parameter
-    size_params = ['size x', 'size y', 'sizes', 'output dimension sizes', 
+    # here a slightly different size_params list without output dimension sizes
+    size_params = ['size x', 'size y', 'sizes', 
                    'inp size1', 'inp size2']
 
     for obj in object_dict.values():

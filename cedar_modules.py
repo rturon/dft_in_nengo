@@ -250,19 +250,34 @@ class NeuralField(object):
                           
 
 class ComponentMultiply(object):
-    def __init__(self, sizes):
-        self.sizes = sizes
+    # TODO: adapt ComponentMultiply to be able to deal with inputs of different
+    # sizes
+    def __init__(self, inp_size1, inp_size2):
+        self.inp_size1 = inp_size1
+        self.inp_size2 = inp_size2
+        if len(self.inp_size1) >= len(self.inp_size2):
+            self.out_size = self.inp_size1
+        else:
+            self.out_size = self.inp_size2
         
     def update(self, inp):
-        size = np.prod(self.sizes)
-        inp1 = inp[:size]
-        inp2 = inp[size:]
+        # get the index of where input1 and input2 are seperated
+        sep = np.prod(self.inp_size1)
+        inp1 = inp[:sep]
+        inp2 = inp[sep:]
         
-        return inp1 * inp2
+        if self.inp_size1 == self.inp_size2 or self.inp_size1 == [] or self.inp_size2 == []:
+            return inp1 * inp2
+        
+        else:
+            inp1 = inp1.reshape(*self.inp_size1)
+            inp2 = inp2.reshape(*self.inp_size2)
+            return (inp1 * inp2).flatten()
     
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes)*2, 
-                          size_out=np.prod(self.sizes))
+        return nengo.Node(lambda t, x: self.update(x), 
+                          size_in=int(np.prod(self.inp_size1)+np.prod(self.inp_size2)), 
+                          size_out=np.prod(self.out_size))
 
 
 class GaussInput(object):
