@@ -11,12 +11,23 @@
             ],
             "comments": ""
         },
-        "cedar.processing.sources.LinearSpatialTemplate": {
-            "name": "Linear Spatial Template",
-            "size x": "50",
-            "size y": "50",
-            "lowest": "0",
-            "upmost": "10",
+        "cedar.processing.sources.GaussInput": {
+            "name": "Gauss Input 2",
+            "dimensionality": "2",
+            "sizes": [
+                "50",
+                "50"
+            ],
+            "amplitude": "7",
+            "centers": [
+                "24",
+                "24"
+            ],
+            "sigma": [
+                "20",
+                "20"
+            ],
+            "cyclic": "false",
             "comments": ""
         },
         "cedar.processing.Projection": {
@@ -399,10 +410,6 @@
     },
     "connections": [
         {
-            "source": "Linear Spatial Template.spatial pattern",
-            "target": "Group 1.external input"
-        },
-        {
             "source": "Spatial Template.spatial pattern",
             "target": "Group 1.external input 2"
         },
@@ -421,6 +428,10 @@
         {
             "source": "Group 1.external output 3",
             "target": "Flip.input"
+        },
+        {
+            "source": "Gauss Input 2.Gauss input",
+            "target": "Group 1.external input"
         }
     ],
     "name": "",
@@ -439,12 +450,12 @@
         },
         {
             "type": "step",
-            "step": "Linear Spatial Template",
+            "step": "Gauss Input 2",
             "display style": "ICON_ONLY",
             "width": "40",
             "height": "40",
             "positionX": "-540",
-            "positionY": "-90"
+            "positionY": "-120"
         },
         {
             "type": "step",
@@ -491,7 +502,364 @@
     },
     "ui generic": {
         "group": "",
-        "open plots": "",
+        "open plots": {
+            "ProjectionWidget0": {
+                "step": "Projection",
+                "position_x": "849",
+                "position_y": "2060",
+                "width": "200",
+                "height": "202",
+                "position_relative_x": "0.58350515463917529",
+                "position_relative_y": "2",
+                "width_relative": "0.13745704467353953",
+                "height_relative": "0.19611650485436893",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "output",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Gauss Input 2Widget0": {
+                "step": "Gauss Input 2",
+                "position_x": "650",
+                "position_y": "2055",
+                "width": "200",
+                "height": "202",
+                "position_relative_x": "0.44673539518900346",
+                "position_relative_y": "1.9951456310679612",
+                "width_relative": "0.13745704467353953",
+                "height_relative": "0.19611650485436893",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "Gauss input",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "Projection 2Widget0": {
+                "step": "Projection 2",
+                "position_x": "1056",
+                "position_y": "2058",
+                "width": "200",
+                "height": "202",
+                "position_relative_x": "0.72577319587628863",
+                "position_relative_y": "1.9980582524271844",
+                "width_relative": "0.13745704467353953",
+                "height_relative": "0.19611650485436893",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "output",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "autoscaling": "true",
+                            "major grid visible": "false",
+                            "minor grid visible": "false",
+                            "y axis limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Gauss InputWidget0": {
+                "step": "Group 2.Gauss Input",
+                "position_x": "1048",
+                "position_y": "2230",
+                "width": "248",
+                "height": "244",
+                "position_relative_x": "0.72027491408934707",
+                "position_relative_y": "2.1650485436893203",
+                "width_relative": "0.17044673539518901",
+                "height_relative": "0.23689320388349513",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "Gauss input",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "Component MultiplyWidget0": {
+                "step": "Group 1.Component Multiply",
+                "position_x": "455",
+                "position_y": "2255",
+                "width": "235",
+                "height": "202",
+                "position_relative_x": "0.3127147766323024",
+                "position_relative_y": "2.1893203883495147",
+                "width_relative": "0.16151202749140894",
+                "height_relative": "0.19611650485436893",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "product",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "FlipWidget0": {
+                "step": "Flip",
+                "position_x": "464",
+                "position_y": "2047",
+                "width": "226",
+                "height": "210",
+                "position_relative_x": "0.31890034364261166",
+                "position_relative_y": "1.9873786407766991",
+                "width_relative": "0.15532646048109966",
+                "height_relative": "0.20388349514563106",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "output",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "Static GainWidget0": {
+                "step": "Group 1.Static Gain",
+                "position_x": "845",
+                "position_y": "2250",
+                "width": "230",
+                "height": "215",
+                "position_relative_x": "0.58075601374570451",
+                "position_relative_y": "2.1844660194174756",
+                "width_relative": "0.15807560137457044",
+                "height_relative": "0.20873786407766989",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "output",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "Spatial TemplateWidget0": {
+                "step": "Spatial Template",
+                "position_x": "1255",
+                "position_y": "2032",
+                "width": "222",
+                "height": "236",
+                "position_relative_x": "0.86254295532646053",
+                "position_relative_y": "1.9728155339805826",
+                "width_relative": "0.15257731958762888",
+                "height_relative": "0.22912621359223301",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "spatial pattern",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "Neural FieldWidget0": {
+                "step": "Group 1.Neural Field",
+                "position_x": "655",
+                "position_y": "2256",
+                "width": "200",
+                "height": "202",
+                "position_relative_x": "0.45017182130584193",
+                "position_relative_y": "2.1902912621359225",
+                "width_relative": "0.13745704467353953",
+                "height_relative": "0.19611650485436893",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "sigmoided activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "false",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "Neural Field 2Widget0": {
+                "step": "Group 2.Neural Field 2",
+                "position_x": "1264",
+                "position_y": "2263",
+                "width": "222",
+                "height": "210",
+                "position_relative_x": "0.86872852233676978",
+                "position_relative_y": "2.1970873786407767",
+                "width_relative": "0.15257731958762888",
+                "height_relative": "0.20388349514563106",
+                "data_list": [
+                    {
+                        "id": "OUTPUT",
+                        "name": "sigmoided activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "false",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            }
+        },
         "plot groups": "",
         "architecture widgets": "",
         "robots": "",

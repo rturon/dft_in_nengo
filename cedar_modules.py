@@ -248,7 +248,7 @@ class NeuralField(object):
         return self.u
         
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x.reshape(self.sizes)).flatten(),
+        self.node = nengo.Node(lambda t, x: self.update(x.reshape(self.sizes)).flatten(),
                           size_in=int(np.product(self.sizes)), 
                           size_out=int(np.product(self.sizes)))
                           
@@ -263,6 +263,8 @@ class ComponentMultiply(object):
             self.out_size = self.inp_size1
         else:
             self.out_size = self.inp_size2
+        # internal counter for number of connections to know where to connect to
+        self.connections = 0
         
     def update(self, inp):
         # get the index of where input1 and input2 are seperated
@@ -279,7 +281,7 @@ class ComponentMultiply(object):
             return (inp1 * inp2).flatten()
     
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x), 
+        self.node = nengo.Node(lambda t, x: self.update(x), 
                           size_in=int(np.prod(self.inp_size1)+np.prod(self.inp_size2)), 
                           size_out=np.prod(self.out_size))
 
@@ -294,7 +296,7 @@ class GaussInput(object):
         self.a = a
         
     def make_node(self):
-        return nengo.Node(make_gaussian(self.sizes, self.centers, self.sigmas, self.a).flatten())
+        self.node = nengo.Node(make_gaussian(self.sizes, self.centers, self.sigmas, self.a).flatten())
 
 
 class ConstMatrix(object):
@@ -303,7 +305,7 @@ class ConstMatrix(object):
         self.value = value
         
     def make_node(self):
-        return nengo.Node(np.ones(np.prod(self.sizes))*self.value)
+        self.node = nengo.Node(np.ones(np.prod(self.sizes))*self.value)
 
 
 class StaticGain(object):
@@ -315,7 +317,7 @@ class StaticGain(object):
         return inp * self.gain_factor
     
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes))
+        self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes))
 
 
 class Flip(object):
@@ -334,7 +336,7 @@ class Flip(object):
         return out.flatten()
     
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes), 
+        self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes), 
                           size_out=np.prod(self.sizes))
 
 
@@ -364,7 +366,7 @@ class Projection(object):
             
         
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x), 
+        self.node = nengo.Node(lambda t, x: self.update(x), 
                           size_in=np.prod(self.sizes_in) if self.sizes_in != [] else 1, 
                           size_out=np.prod(self.sizes_out) if self.sizes_out != [] else 1)
 
@@ -385,7 +387,7 @@ class Convolution(object):
         return pad_and_convolve(matrix, kernel, self.border_type).flatten()
     
     def make_node(self):
-        return nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes)*2, 
+        self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes)*2, 
                           size_out=np.prod(self.sizes))
 
     
@@ -401,6 +403,14 @@ class SpatialTemplate(object):
         self.sigma_sigmoid_fw = sigma_sigmoid_fw
         
     def make_node(self):
-        return nengo.Node(create_template(self.sizes, self.invert_sides, self.horizontal_pattern,
+        self.node = nengo.Node(create_template(self.sizes, self.invert_sides, self.horizontal_pattern,
                                           self.sigma_th_hor, self.mu_r, self.sigma_r, 
                                           self.sigma_sigmoid_fw).flatten())
+
+
+class Boost(object):
+    def __init__(self, strength):
+        self.strength = strength
+
+    def make_node(self):
+        self.node = nengo.Node([self.strength])
