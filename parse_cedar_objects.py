@@ -1,13 +1,61 @@
 import cedar_modules
 
 def neural_field_parser(neuralfield_params):
-    pass
+    name = neuralfield_params[1][0][1]
+    sizes = [int(s) for s in neuralfield_params[1][6][1]]
+    # resting level
+    h = float(neuralfield_params[1][8][1])
+    # time scale
+    tau = float(neuralfield_params[1][7][1])
+    # global inhibition
+    c_glob = float(neuralfield_params[1][11][1]) 
+    borderType = neuralfield_params[1][13][1][0][1]
+    border_type = 'zero-filled borders' if borderType == 'Zero' else 'cyclic'
+    input_noise_gain = float(neuralfield_params[1][9][1])
 
+    #kernel
+    kernel_params = neuralfield_params[1][12][1]
+    if kernel_params[0][0] == 'cedar.aux.kernel.Box':
+        amplitude = float(kernel_params[0][1][2][1])
+        kernel = cedar_modules.BoxKernel(amplitude)
+    elif kernel_params[0][0] == 'cedar.aux.kernel.Gauss':
+        # amplitude
+        c = float(kernel_params[0][1][2][1])
+        sigma = float(kernel_params[0][1][3][1][0])
+        normalize = True if kernel_params[0][1][4][1] == 'true' else False
+        dims = int(kernel_params[0][1][0][1])
+        kernel = cedar_modules.GaussKernel(c, sigma, normalize, dims)
+    else:
+        print('Kernel not known!')
+
+    # nonlinearity
+    sigmoid_params = neuralfield_params[1][10]
+    beta = float(sigmoid_params[1][2][1])
+    threshold = float(sigmoid_params[1][1][1])
+    sigmoid = cedar_modules.AbsSigmoid(beta, threshold)
+
+    print('Neural Field with params: \n',
+          'name:', name,
+          '\n sizes:', sizes,
+          '\n h:', h,
+          '\n tau:', tau,
+          '\n c_glob:', c_glob,
+          '\n border_type:', border_type,
+          '\n input_noise_gain:', input_noise_gain,
+          '\n kernel:', kernel,
+          '\n nonlinearity:', sigmoid)
+    
 def boost_parser(boost_params):
-    pass
+    name = boost_params[1][0][1]
+    strength = float(boost_params[1][1][1])
 
 def component_multiply_parser(cm_params):
-    pass
+    name = cm_params[1][0][1]
+    inp_size1 = [int(s) for s in cm_params[1][-2][1]]
+    inp_size2 = [int(s) for s in cm_params[1][-1][1]]
+
+    print("ComponentMultiply with params: \n name: %s \n inp_size1:" %name, 
+          inp_size1, "\n inp_size2:", inp_size2)
 
 def const_matrix_parser(cm_params):
     name = cm_params[1][0][1]
@@ -19,11 +67,14 @@ def const_matrix_parser(cm_params):
 
 def convolution_parser(conv_params):
     name = conv_params[1][0][1]
-    # in the architecture the value for kernels is "", i.e. no kernel
-    # TODO: looks like no kernel means just passing on the input --> 
-    # check if that's really the case
-    # if the convolution has two inputs, one of it is the kernel, the other
-    # one is the input to convolve over
+    sizes = [int(s) for s in conv_params[1][-1][1]]
+    borderType = conv_params[1][2][1][0][1]
+    border_type = 'zero-filled borders' if borderType == 'Zero' else 'cyclic'
+    
+    print('Convolution with params:', 
+          '\n name:', name,
+          '\n sizes:', sizes,
+          '\n border_type:', border_type)
 
 def flip_parser(flip_params):
     name = flip_params[1][0][1]
