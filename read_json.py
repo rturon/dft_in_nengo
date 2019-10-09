@@ -250,13 +250,13 @@ def get_size_param(obj, CM=False):
         # of its higher dimensional input
         # ind1 = [i for i, elem in enumerate(obj[1]) if elem[0] == 'inp size1'][0]
         # ind2 = [i for i, elem in enumerate(obj[1]) if elem[0] == 'inp size2'][0]
-        print('Source is a CM object:', obj[1][0][1])
-        print(obj[1])
+        # print('Source is a CM object:', obj[1][0][1])
+        # print(obj[1])
         inp_size1 = [elem[1] for elem in obj[1] if elem[0] == 'inp size1'][0]
         inp_size2 = [elem[1] for elem in obj[1] if elem[0] == 'inp size2'][0]
         out_size = inp_size1 if len(inp_size1) >= len(inp_size2) else inp_size2
-        print('Input size 1 and 2:', inp_size1, inp_size2)
-        print('Used as output size:', out_size, '\n')
+        # print('Input size 1 and 2:', inp_size1, inp_size2)
+        # print('Used as output size:', out_size, '\n')
         sizes = create_size_param(obj, out_size, CM=CM)
     else:
         raise Exception('The object %s does not have a size parameter!' %obj[1][0][1])

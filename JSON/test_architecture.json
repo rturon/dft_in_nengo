@@ -507,11 +507,11 @@
                 "step": "Projection",
                 "position_x": "849",
                 "position_y": "2060",
-                "width": "200",
+                "width": "208",
                 "height": "202",
-                "position_relative_x": "0.58350515463917529",
+                "position_relative_x": "0.59999999999999998",
                 "position_relative_y": "2",
-                "width_relative": "0.13745704467353953",
+                "width_relative": "0.1469964664310954",
                 "height_relative": "0.19611650485436893",
                 "data_list": [
                     {
@@ -543,9 +543,9 @@
                 "position_y": "2055",
                 "width": "200",
                 "height": "202",
-                "position_relative_x": "0.44673539518900346",
+                "position_relative_x": "0.45936395759717313",
                 "position_relative_y": "1.9951456310679612",
-                "width_relative": "0.13745704467353953",
+                "width_relative": "0.14134275618374559",
                 "height_relative": "0.19611650485436893",
                 "data_list": [
                     {
@@ -579,9 +579,9 @@
                 "position_y": "2058",
                 "width": "200",
                 "height": "202",
-                "position_relative_x": "0.72577319587628863",
+                "position_relative_x": "0.74628975265017672",
                 "position_relative_y": "1.9980582524271844",
-                "width_relative": "0.13745704467353953",
+                "width_relative": "0.14134275618374559",
                 "height_relative": "0.19611650485436893",
                 "data_list": [
                     {
@@ -613,9 +613,9 @@
                 "position_y": "2230",
                 "width": "248",
                 "height": "244",
-                "position_relative_x": "0.72027491408934707",
+                "position_relative_x": "0.74063604240282688",
                 "position_relative_y": "2.1650485436893203",
-                "width_relative": "0.17044673539518901",
+                "width_relative": "0.17526501766784452",
                 "height_relative": "0.23689320388349513",
                 "data_list": [
                     {
@@ -649,9 +649,9 @@
                 "position_y": "2255",
                 "width": "235",
                 "height": "202",
-                "position_relative_x": "0.3127147766323024",
+                "position_relative_x": "0.32155477031802121",
                 "position_relative_y": "2.1893203883495147",
-                "width_relative": "0.16151202749140894",
+                "width_relative": "0.16607773851590105",
                 "height_relative": "0.19611650485436893",
                 "data_list": [
                     {
@@ -685,9 +685,9 @@
                 "position_y": "2047",
                 "width": "226",
                 "height": "210",
-                "position_relative_x": "0.31890034364261166",
+                "position_relative_x": "0.32791519434628974",
                 "position_relative_y": "1.9873786407766991",
-                "width_relative": "0.15532646048109966",
+                "width_relative": "0.15971731448763252",
                 "height_relative": "0.20388349514563106",
                 "data_list": [
                     {
@@ -721,9 +721,9 @@
                 "position_y": "2250",
                 "width": "230",
                 "height": "215",
-                "position_relative_x": "0.58075601374570451",
+                "position_relative_x": "0.59717314487632511",
                 "position_relative_y": "2.1844660194174756",
-                "width_relative": "0.15807560137457044",
+                "width_relative": "0.16254416961130741",
                 "height_relative": "0.20873786407766989",
                 "data_list": [
                     {
@@ -757,9 +757,9 @@
                 "position_y": "2032",
                 "width": "222",
                 "height": "236",
-                "position_relative_x": "0.86254295532646053",
+                "position_relative_x": "0.88692579505300351",
                 "position_relative_y": "1.9728155339805826",
-                "width_relative": "0.15257731958762888",
+                "width_relative": "0.1568904593639576",
                 "height_relative": "0.22912621359223301",
                 "data_list": [
                     {
@@ -793,9 +793,9 @@
                 "position_y": "2256",
                 "width": "200",
                 "height": "202",
-                "position_relative_x": "0.45017182130584193",
+                "position_relative_x": "0.4628975265017668",
                 "position_relative_y": "2.1902912621359225",
-                "width_relative": "0.13745704467353953",
+                "width_relative": "0.14134275618374559",
                 "height_relative": "0.19611650485436893",
                 "data_list": [
                     {
@@ -823,15 +823,51 @@
                     }
                 ]
             },
+            "Neural FieldWidget1": {
+                "step": "Group 1.Neural Field",
+                "position_x": "731",
+                "position_y": "1874",
+                "width": "200",
+                "height": "202",
+                "position_relative_x": "0.51660777385159007",
+                "position_relative_y": "1.8194174757281554",
+                "width_relative": "0.14134275618374559",
+                "height_relative": "0.19611650485436893",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
             "Neural Field 2Widget0": {
                 "step": "Group 2.Neural Field 2",
                 "position_x": "1264",
                 "position_y": "2263",
                 "width": "222",
                 "height": "210",
-                "position_relative_x": "0.86872852233676978",
+                "position_relative_x": "0.89328621908127204",
                 "position_relative_y": "2.1970873786407767",
-                "width_relative": "0.15257731958762888",
+                "width_relative": "0.1568904593639576",
                 "height_relative": "0.20388349514563106",
                 "data_list": [
                     {
@@ -849,6 +885,42 @@
                             "smooth scaling": "true",
                             "keep aspect ratio": "true",
                             "automatic value scaling": "false",
+                            "show legend": "true",
+                            "value limits": {
+                                "lower limit": "0",
+                                "upper limit": "1"
+                            },
+                            "color jet": "PlotDefault"
+                        }
+                    }
+                ]
+            },
+            "Neural Field 2Widget1": {
+                "step": "Group 2.Neural Field 2",
+                "position_x": "1279",
+                "position_y": "1839",
+                "width": "200",
+                "height": "202",
+                "position_relative_x": "0.90388692579505303",
+                "position_relative_y": "1.7854368932038835",
+                "width_relative": "0.14134275618374559",
+                "height_relative": "0.19611650485436893",
+                "data_list": [
+                    {
+                        "id": "BUFFER",
+                        "name": "activation",
+                        "ignoreIfMissing": "false",
+                        "plotDeclaration": "cedar::aux::gui::MatDataPlot"
+                    }
+                ],
+                "plot configurations": [
+                    {
+                        "row": "1",
+                        "col": "0",
+                        "plot configuration": {
+                            "smooth scaling": "true",
+                            "keep aspect ratio": "true",
+                            "automatic value scaling": "true",
                             "show legend": "true",
                             "value limits": {
                                 "lower limit": "0",

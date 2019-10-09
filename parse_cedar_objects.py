@@ -47,13 +47,13 @@ def neural_field_parser(neuralfield_params):
 
     return name, cedar_modules.NeuralField(sizes, h, tau, kernel, c_glob,
                                            sigmoid, border_type, 
-                                           input_noise_gain)
+                                           input_noise_gain, name)
     
 def boost_parser(boost_params):
     name = boost_params[1][0][1]
     strength = float(boost_params[1][1][1])
 
-    return name, cedar_modules.Boost(strength)
+    return name, cedar_modules.Boost(strength, name)
 
 def component_multiply_parser(cm_params):
     name = cm_params[1][0][1]
@@ -62,7 +62,7 @@ def component_multiply_parser(cm_params):
 
     # print("ComponentMultiply with params: \n name: %s \n inp_size1:" %name, 
     #       inp_size1, "\n inp_size2:", inp_size2)
-    return name, cedar_modules.ComponentMultiply(inp_size1, inp_size2)
+    return name, cedar_modules.ComponentMultiply(inp_size1, inp_size2, name)
 
 def const_matrix_parser(cm_params):
     name = cm_params[1][0][1]
@@ -71,7 +71,7 @@ def const_matrix_parser(cm_params):
 
     # print("ConstantMatrix with params: \n name: %s \n sizes:" %name, sizes,
     #       "\n value: %i" %value)
-    return name, cedar_modules.ConstMatrix(sizes, value)
+    return name, cedar_modules.ConstMatrix(sizes, value, name)
 
 def convolution_parser(conv_params):
     name = conv_params[1][0][1]
@@ -83,7 +83,7 @@ def convolution_parser(conv_params):
     #       '\n name:', name,
     #       '\n sizes:', sizes,
     #       '\n border_type:', border_type)
-    return name, cedar_modules.Convolution(sizes, border_type)
+    return name, cedar_modules.Convolution(sizes, border_type, name)
 
 def flip_parser(flip_params):
     name = flip_params[1][0][1]
@@ -93,7 +93,7 @@ def flip_parser(flip_params):
 
     # print("Flip with params: \n name: %s \n sizes:" %name, sizes,
     #       "\n flip dimensions: ", flip_dimensions)
-    return name, cedar_modules.Flip(sizes, flip_dimensions)
+    return name, cedar_modules.Flip(sizes, flip_dimensions, name)
 
 def gauss_input_parser(gi_params):
     name = gi_params[1][0][1]
@@ -106,7 +106,7 @@ def gauss_input_parser(gi_params):
     #       "\n centers: ", centers,
     #       "\n sigmas:", sigmas,
     #       "\n amplitude:", a)
-    return name, cedar_modules.GaussInput(sizes, centers, sigmas, a)
+    return name, cedar_modules.GaussInput(sizes, centers, sigmas, a, name)
 
 def projection_parser(pro_params):
     name = pro_params[1][0][1]
@@ -121,7 +121,7 @@ def projection_parser(pro_params):
     #       "\n sizes_out:", sizes_out, "\n compression_type:", compression_type,
     #       "\n dimension_mapping:", dimension_mapping)
     return name, cedar_modules.Projection(sizes_out, sizes_in, dimension_mapping,
-                                          compression_type)
+                                          compression_type, name)
 
 def spatial_template_parser(template_params):
     name = template_params[1][0][1]
@@ -142,7 +142,8 @@ def spatial_template_parser(template_params):
     #       "\n sigma_sigmoid_fw:", sigma_sigmoid_fw)
     return name, cedar_modules.SpatialTemplate(sizes, invert_sides, 
                                                horizontal_pattern, sigma_th_hor,
-                                               mu_r, sigma_r, sigma_sigmoid_fw)
+                                               mu_r, sigma_r, sigma_sigmoid_fw,
+                                               name)
 
 
 def static_gain_parser(sg_params):
@@ -152,7 +153,7 @@ def static_gain_parser(sg_params):
 
     # print("StaticGain with params: \n name: %s" %name,
     #       "\n sizes:", sizes, "\n gain_factor:", gain_factor)
-    return name, cedar_modules.StaticGain(sizes, gain_factor)
+    return name, cedar_modules.StaticGain(sizes, gain_factor, name)
 
 def parse_cedar_params(params):
     if params[0] == 'cedar.dynamics.NeuralField':
