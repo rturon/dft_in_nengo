@@ -1,4 +1,6 @@
 import cedar_modules
+import numpy as np
+import nengo
 
 def neural_field_parser(neuralfield_params):
     name = neuralfield_params[1][0][1]
@@ -24,7 +26,13 @@ def neural_field_parser(neuralfield_params):
         sigma = float(kernel_params[0][1][3][1][0])
         normalize = True if kernel_params[0][1][4][1] == 'true' else False
         dims = int(kernel_params[0][1][0][1])
-        kernel = cedar_modules.GaussKernel(c, sigma, normalize, dims)
+        # in cedar the 0-dimensional neural fields work with 1-dimensional 
+        # kernels, but only use the center value
+        # this is the same as just using a 0-dimensional gauss kernel
+        if len(sizes) == 0 and dims == 1:
+            kernel = cedar_modules.GaussKernel(c, sigma, normalize, 0)
+        else:
+            kernel = cedar_modules.GaussKernel(c, sigma, normalize, dims)
     else:
         print('Kernel not known!')
 
@@ -33,17 +41,6 @@ def neural_field_parser(neuralfield_params):
     beta = float(sigmoid_params[1][2][1])
     threshold = float(sigmoid_params[1][1][1])
     sigmoid = cedar_modules.AbsSigmoid(beta, threshold)
-
-    # print('Neural Field with params: \n',
-    #       'name:', name,
-    #       '\n sizes:', sizes,
-    #       '\n h:', h,
-    #       '\n tau:', tau,
-    #       '\n c_glob:', c_glob,
-    #       '\n border_type:', border_type,
-    #       '\n input_noise_gain:', input_noise_gain,
-    #       '\n kernel:', kernel,
-    #       '\n nonlinearity:', sigmoid)
 
     return name, cedar_modules.NeuralField(sizes, h, tau, kernel, c_glob,
                                            sigmoid, border_type, 
@@ -60,8 +57,6 @@ def component_multiply_parser(cm_params):
     inp_size1 = [int(s) for s in cm_params[1][-2][1]]
     inp_size2 = [int(s) for s in cm_params[1][-1][1]]
 
-    # print("ComponentMultiply with params: \n name: %s \n inp_size1:" %name, 
-    #       inp_size1, "\n inp_size2:", inp_size2)
     return name, cedar_modules.ComponentMultiply(inp_size1, inp_size2, name)
 
 def const_matrix_parser(cm_params):
@@ -69,8 +64,6 @@ def const_matrix_parser(cm_params):
     sizes = [int(s) for s in cm_params[1][1][1]]
     value = int(cm_params[1][2][1])
 
-    # print("ConstantMatrix with params: \n name: %s \n sizes:" %name, sizes,
-    #       "\n value: %i" %value)
     return name, cedar_modules.ConstMatrix(sizes, value, name)
 
 def convolution_parser(conv_params):
@@ -78,11 +71,7 @@ def convolution_parser(conv_params):
     sizes = [int(s) for s in conv_params[1][-1][1]]
     borderType = conv_params[1][2][1][0][1]
     border_type = 'zero-filled borders' if borderType == 'Zero' else 'cyclic'
-    
-    # print('Convolution with params:', 
-    #       '\n name:', name,
-    #       '\n sizes:', sizes,
-    #       '\n border_type:', border_type)
+
     return name, cedar_modules.Convolution(sizes, border_type, name)
 
 def flip_parser(flip_params):
@@ -91,8 +80,6 @@ def flip_parser(flip_params):
                        True if flip_params[1][1][1][1] == 'true' else False]
     sizes = [int(s) for s in flip_params[1][-1][1]]
 
-    # print("Flip with params: \n name: %s \n sizes:" %name, sizes,
-    #       "\n flip dimensions: ", flip_dimensions)
     return name, cedar_modules.Flip(sizes, flip_dimensions, name)
 
 def gauss_input_parser(gi_params):
@@ -102,10 +89,6 @@ def gauss_input_parser(gi_params):
     sigmas = [float(s) for s in gi_params[1][5][1]]
     a = float(gi_params[1][3][1])
 
-    # print("GaussInput with params: \n name: %s \n sizes:" %name, sizes,
-    #       "\n centers: ", centers,
-    #       "\n sigmas:", sigmas,
-    #       "\n amplitude:", a)
     return name, cedar_modules.GaussInput(sizes, centers, sigmas, a, name)
 
 def projection_parser(pro_params):
@@ -117,9 +100,6 @@ def projection_parser(pro_params):
     for kv_pair in pro_params[1][1][1]:
         dimension_mapping[kv_pair[0]] = int(kv_pair[1]) if int(kv_pair[1]) < 3 else False
 
-    # print("Projection with params: \n name: %s"%name, "\n sizes_in:", sizes_in,
-    #       "\n sizes_out:", sizes_out, "\n compression_type:", compression_type,
-    #       "\n dimension_mapping:", dimension_mapping)
     return name, cedar_modules.Projection(sizes_out, sizes_in, dimension_mapping,
                                           compression_type, name)
 
@@ -133,13 +113,6 @@ def spatial_template_parser(template_params):
     sigma_r = float(template_params[1][7][1])
     sigma_sigmoid_fw = float(template_params[1][8][1])
 
-    # print("SpatialTemplate with params: \n name: %s"%name, "\n sizes:", sizes,
-    #       "\n invert_sides:", invert_sides, 
-    #       "\n horizontal_pattern:", horizontal_pattern,
-    #       "\n sigma_th_hor:", sigma_th_hor,
-    #       "\n mu_r:", mu_r,
-    #       "\n sigma_r:", sigma_r,
-    #       "\n sigma_sigmoid_fw:", sigma_sigmoid_fw)
     return name, cedar_modules.SpatialTemplate(sizes, invert_sides, 
                                                horizontal_pattern, sigma_th_hor,
                                                mu_r, sigma_r, sigma_sigmoid_fw,
@@ -151,8 +124,6 @@ def static_gain_parser(sg_params):
     sizes = [int(s) for s in sg_params[1][-1][1]]
     gain_factor = float(sg_params[1][1][1])
 
-    # print("StaticGain with params: \n name: %s" %name,
-    #       "\n sizes:", sizes, "\n gain_factor:", gain_factor)
     return name, cedar_modules.StaticGain(sizes, gain_factor, name)
 
 def parse_cedar_params(params):
@@ -179,3 +150,76 @@ def parse_cedar_params(params):
     else:
         print('Object unknown: %s' %params[0])
         return None, None
+
+def make_connection(source_name, target_name, object_dict):
+    source = source_name.rsplit('.',1)[0]
+    target = target_name.rsplit('.',1)[0]
+    
+    target_object = object_dict[target]
+    # there are some special cases where the type of object
+    # changes the connection that is made 
+    # 1. special case: the target is a ComponentMultiply
+    if target_object.__class__.__name__ == 'ComponentMultiply':
+        if target_object.connections == 0:
+            # connect to the first entries
+            target_entries = target_object.node[:int(np.product(target_object.inp_size1))]
+            target_size = target_object.inp_size1
+            target_object.connections += 1
+        elif target_object.connections == 1:
+            # connect to the last entries
+            target_entries = target_object.node[int(np.product(target_object.inp_size1)):]
+            target_size = target_object.inp_size2
+            # count plus 1 again to realize when trying to add a third connection
+            target_object.connections += 1
+        else:
+            print('Too many connections for ComponentMultiply!')
+    # 2. special case: the target is a Convolution
+    elif target_object.__class__.__name__ == 'Convolution':
+        target_size = target_object.sizes
+        # the source can be the kernel or the matrix
+        if target_name.rsplit('.',1)[1] == 'kernel':
+            target_entries = target_object.node[:np.prod(target_object.sizes)]
+        # if it's not the kernel, it's the matrix
+        else:
+            target_entries = target_object.node[:np.prod(target_object.sizes)]
+    # otherwise the target entries are all entries of the target node
+    else:
+        target_entries = target_object.node
+        if target_object.__class__.__name__ == 'Projection':
+            target_size = target_object.sizes_in 
+        else:
+            target_size = target_object.sizes
+
+    source_object = object_dict[source]
+    # 3. special case: the source is a NeuralField --> need sigmoided activation
+    if source_object.__class__.__name__ == 'NeuralField':
+        sigmoid = cedar_modules.AbsSigmoid()
+        nengo.Connection(source_object.node, target_entries,
+                         synapse=0, function=sigmoid)
+    # TODO: 4. special case: the source is a static gain and its target has a 
+    # different size than the output size of the static gain
+    # solution: Put a Projection node in between
+    elif  source_object.__class__.__name__ == 'StaticGain' \
+        and source_object.sizes != target_size:
+        if source_object.sizes == []:
+            dimension_mapping = {}
+            sizes_in = []
+            sizes_out = target_object.sizes
+            upscale = cedar_modules.Projection(sizes_out, sizes_in, 
+                                               dimension_mapping, 'max',
+                                               'Upscale Projection')
+            upscale.make_node()
+            # connect the Static Gain to the upscale
+            nengo.Connection(source_object.node, upscale.node)
+            # and connect the upscale to the target_object
+            nengo.Connection(upscale.node, target_entries)
+
+        else:
+            print('Upscaling from', source_object.sizes, 'to', target_size, 
+                  'not implemented yet!' )
+
+
+    # just normal connection
+    else:
+        nengo.Connection(object_dict[source].node, target_entries,
+                         synapse=0)

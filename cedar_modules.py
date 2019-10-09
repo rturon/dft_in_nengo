@@ -65,8 +65,8 @@ def reduce(inp, dimension_mapping, compression_type):
         out = inp.max(axis=axis_reduce)
     
     # transpose array st order of dimensions is as given in dimension mapping
-    dim_order = [int(value) for value in dimension_mapping.values() if value]
-
+    dim_order = [int(value) for value in dimension_mapping.values() if type(value) == int]
+    # print(dim_order, dimension_mapping)
     out = out.transpose(*dim_order)
     
     return out
@@ -229,8 +229,8 @@ class NeuralField(object):
                        "activation": [],
                        "sigmoided sum": []}
         
-        assert (kernel.dims == len(sizes)), "Kernel must have same number of " + \
-                                             "dimensions as Neural Field!"
+        assert (kernel.dims == len(sizes) or (len(sizes) == 0 and kernel.dims == 1)), \
+                "Kernel must have same number of dimensions as Neural Field!"
         self.kernel = kernel
         
         self.kernel_matrix = kernel()
@@ -276,7 +276,7 @@ class ComponentMultiply(object):
         
     def update(self, inp):
         # get the index of where input1 and input2 are seperated
-        sep = np.prod(self.inp_size1)
+        sep = int(np.prod(self.inp_size1))
         inp1 = inp[:sep]
         inp2 = inp[sep:]
         
@@ -292,12 +292,12 @@ class ComponentMultiply(object):
         if self.name is not None:
             self.node = nengo.Node(lambda t, x: self.update(x), 
                           size_in=int(np.prod(self.inp_size1)+np.prod(self.inp_size2)), 
-                          size_out=np.prod(self.out_size),
+                          size_out=int(np.prod(self.out_size)),
                           label=self.name)
         else:
             self.node = nengo.Node(lambda t, x: self.update(x), 
                           size_in=int(np.prod(self.inp_size1)+np.prod(self.inp_size2)), 
-                          size_out=np.prod(self.out_size))
+                          size_out=int(np.prod(self.out_size)))
 
 
 class GaussInput(object):
@@ -326,10 +326,10 @@ class ConstMatrix(object):
         
     def make_node(self):
         if self.name is not None:
-            self.node = nengo.Node(np.ones(np.prod(self.sizes))*self.value,
-                                   label=name)
+            self.node = nengo.Node(np.ones(int(np.prod(self.sizes)))*self.value,
+                                   label=self.name)
         else:
-            self.node = nengo.Node(np.ones(np.prod(self.sizes))*self.value)
+            self.node = nengo.Node(np.ones(int(np.prod(self.sizes)))*self.value)
 
 
 class StaticGain(object):
@@ -343,10 +343,10 @@ class StaticGain(object):
     
     def make_node(self):
         if self.name is not None:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes),
+            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)),
                                    label=self.name)
         else:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes))
+            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)))
 
 
 class Flip(object):
@@ -367,11 +367,11 @@ class Flip(object):
     
     def make_node(self):
         if self.name is not None:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes), 
-                          size_out=np.prod(self.sizes), label=self.name)
+            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)), 
+                          size_out=int(np.prod(self.sizes)), label=self.name)
         else:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes), 
-                          size_out=np.prod(self.sizes))
+            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)), 
+                          size_out=int(np.prod(self.sizes)))
 
 
 class Projection(object):
@@ -404,13 +404,13 @@ class Projection(object):
     def make_node(self):
         if self.name is not None:
             self.node = nengo.Node(lambda t, x: self.update(x), 
-                          size_in=np.prod(self.sizes_in) if self.sizes_in != [] else 1, 
-                          size_out=np.prod(self.sizes_out) if self.sizes_out != [] else 1,
+                          size_in=int(np.prod(self.sizes_in)) if self.sizes_in != [] else 1, 
+                          size_out=int(np.prod(self.sizes_out)) if self.sizes_out != [] else 1,
                           label=self.name)
         else:
             self.node = nengo.Node(lambda t, x: self.update(x), 
-                          size_in=np.prod(self.sizes_in) if self.sizes_in != [] else 1, 
-                          size_out=np.prod(self.sizes_out) if self.sizes_out != [] else 1)
+                          size_in=int(np.prod(self.sizes_in)) if self.sizes_in != [] else 1, 
+                          size_out=int(np.prod(self.sizes_out)) if self.sizes_out != [] else 1)
 
 
 class Convolution(object):
@@ -425,17 +425,17 @@ class Convolution(object):
         self.name = name
         
     def update(self, inp):
-        kernel = inp[:np.prod(self.sizes)].reshape(*self.sizes)
-        matrix = inp[np.prod(self.sizes):].reshape(*self.sizes)
+        kernel = inp[:int(np.prod(self.sizes))].reshape(*self.sizes)
+        matrix = inp[int(np.prod(self.sizes)):].reshape(*self.sizes)
         return pad_and_convolve(matrix, kernel, self.border_type).flatten()
     
     def make_node(self):
         if self.name is not None:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes)*2, 
-                          size_out=np.prod(self.sizes), label=name)
+            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)*2), 
+                          size_out=int(np.prod(self.sizes)), label=self.name)
         else:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=np.prod(self.sizes)*2, 
-                          size_out=np.prod(self.sizes))
+            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)*2), 
+                          size_out=int(np.prod(self.sizes)))
 
     
 class SpatialTemplate(object):

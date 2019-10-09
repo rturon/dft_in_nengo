@@ -248,15 +248,9 @@ def get_size_param(obj, CM=False):
     elif any(['inp size' in tpl[0] for tpl in obj[1]]):
         # if the input is a ComponentMultiply then it's output size is the size
         # of its higher dimensional input
-        # ind1 = [i for i, elem in enumerate(obj[1]) if elem[0] == 'inp size1'][0]
-        # ind2 = [i for i, elem in enumerate(obj[1]) if elem[0] == 'inp size2'][0]
-        # print('Source is a CM object:', obj[1][0][1])
-        # print(obj[1])
         inp_size1 = [elem[1] for elem in obj[1] if elem[0] == 'inp size1'][0]
         inp_size2 = [elem[1] for elem in obj[1] if elem[0] == 'inp size2'][0]
         out_size = inp_size1 if len(inp_size1) >= len(inp_size2) else inp_size2
-        # print('Input size 1 and 2:', inp_size1, inp_size2)
-        # print('Used as output size:', out_size, '\n')
         sizes = create_size_param(obj, out_size, CM=CM)
     else:
         raise Exception('The object %s does not have a size parameter!' %obj[1][0][1])
@@ -275,8 +269,10 @@ def backtrace_size(obj, connections, objects_dict, obj_wo_size):
     source = None
     for connection in connections:
         # test if obj is target of connection
+        
         if obj[1][0][1] == connection[1][1].rsplit('.',1)[0]:
             source_name = connection[0][1].rsplit('.',1)[0]
+            
             source = objects_dict[source_name]
             # check if the source has some size parameter
             if any([size_param in object_param for size_param in size_params 
@@ -314,8 +310,10 @@ def backtrace_CM_size(cm_obj, connections, objects_dict):
             sources.append(source)
 
     if len(sources) != 2:
-        print('ComponentMultiply does not have 2 inputs, but %i!' %len(sources))
-        return None
+        print('%s does not have 2 inputs, but %i!' %(cm_obj[1][0][1], len(sources)))
+        # If it does not have inputs, it must be seperate from the architecture
+        # and is not needed
+        return cm_obj[1][0][1]
     
     size_params = ['size x', 'size y', 'sizes', 'output dimension sizes', 
                    'inp size1', 'inp size2']
@@ -355,6 +353,7 @@ def load_from_json(filename):
     size_params = ['size x', 'size y', 'sizes', 
                    'inp size1', 'inp size2']
 
+    objects_to_delete = []
     for obj in object_dict.values():
         has_size = any([size_param in object_param for size_param in size_params 
                     for object_param in obj[1]])
@@ -362,7 +361,12 @@ def load_from_json(filename):
             if obj[0] != 'cedar.processing.ComponentMultiply':
                 backtrace_size(obj, connections, object_dict, obj)
             else:
-                backtrace_CM_size(obj, connections, object_dict)
+                del_name = backtrace_CM_size(obj, connections, object_dict)
+                if del_name is not None:
+                    objects_to_delete.append(del_name)
+
+    for key in objects_to_delete:
+        del object_dict[key]
 
     return object_dict, connections
 
