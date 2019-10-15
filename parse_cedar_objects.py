@@ -17,24 +17,60 @@ def neural_field_parser(neuralfield_params):
 
     #kernel
     kernel_params = neuralfield_params[1][12][1]
-    if kernel_params[0][0] == 'cedar.aux.kernel.Box':
-        amplitude = float(kernel_params[0][1][2][1])
-        kernel = cedar_modules.BoxKernel(amplitude)
-    elif kernel_params[0][0] == 'cedar.aux.kernel.Gauss':
-        # amplitude
-        c = float(kernel_params[0][1][2][1])
-        sigma = float(kernel_params[0][1][3][1][0])
-        normalize = True if kernel_params[0][1][4][1] == 'true' else False
-        dims = int(kernel_params[0][1][0][1])
-        # in cedar the 0-dimensional neural fields work with 1-dimensional 
-        # kernels, but only use the center value
-        # this is the same as just using a 0-dimensional gauss kernel
-        if len(sizes) == 0 and dims == 1:
-            kernel = cedar_modules.GaussKernel(c, sigma, normalize, 0)
-        else:
-            kernel = cedar_modules.GaussKernel(c, sigma, normalize, dims)
+    # need to check if there's only one kernel or several
+    if len(kernel_params) == 1:
+        if kernel_params[0][0] == 'cedar.aux.kernel.Box':
+            amplitude = float(kernel_params[0][1][2][1])
+            kernel = cedar_modules.BoxKernel(amplitude)
+        elif kernel_params[0][0] == 'cedar.aux.kernel.Gauss':
+            # amplitude
+            c = float(kernel_params[0][1][2][1])
+            sigma = float(kernel_params[0][1][3][1][0])
+            normalize = True if kernel_params[0][1][4][1] == 'true' else False
+            dims = int(kernel_params[0][1][0][1])
+            # in cedar the 0-dimensional neural fields work with 1-dimensional 
+            # kernels, but only use the center value
+            # this is the same as just using a 0-dimensional gauss kernel
+            if len(sizes) == 0 and dims == 1:
+                kernel = cedar_modules.GaussKernel(c, sigma, normalize, 0)
+            else:
+                kernel = cedar_modules.GaussKernel(c, sigma, normalize, dims)
     else:
-        print('Kernel not known!')
+        if kernel_params[0][0] == 'cedar.aux.kernel.Box':
+            amplitude = float(kernel_params[0][1][2][1])
+            kernel = cedar_modules.BoxKernel(amplitude)
+        elif kernel_params[0][0] == 'cedar.aux.kernel.Gauss':
+            # amplitude
+            c = float(kernel_params[0][1][2][1])
+            sigma = float(kernel_params[0][1][3][1][0])
+            normalize = True if kernel_params[0][1][4][1] == 'true' else False
+            dims = int(kernel_params[0][1][0][1])
+            # in cedar the 0-dimensional neural fields work with 1-dimensional 
+            # kernels, but only use the center value
+            # this is the same as just using a 0-dimensional gauss kernel
+            if len(sizes) == 0 and dims == 1:
+                kernel1 = cedar_modules.GaussKernel(c, sigma, normalize, 0)
+            else:
+                kernel1 = cedar_modules.GaussKernel(c, sigma, normalize, dims)
+        if kernel_params[1][0] == 'cedar.aux.kernel.Box':
+            amplitude = float(kernel_params[0][1][2][1])
+            kernel = cedar_modules.BoxKernel(amplitude)
+        elif kernel_params[1][0] == 'cedar.aux.kernel.Gauss':
+            # amplitude
+            c = float(kernel_params[1][1][2][1])
+            sigma = float(kernel_params[1][1][3][1][0])
+            normalize = True if kernel_params[1][1][4][1] == 'true' else False
+            dims = int(kernel_params[1][1][0][1])
+            # in cedar the 0-dimensional neural fields work with 1-dimensional 
+            # kernels, but only use the center value
+            # this is the same as just using a 0-dimensional gauss kernel
+            if len(sizes) == 0 and dims == 1:
+                kernel2 = cedar_modules.GaussKernel(c, sigma, normalize, 0)
+            else:
+                kernel2 = cedar_modules.GaussKernel(c, sigma, normalize, dims)
+        kernel = [kernel1, kernel2]
+    # else:
+    #     print('Kernel not known!')
 
     # nonlinearity
     sigmoid_params = neuralfield_params[1][10]
@@ -181,7 +217,7 @@ def make_connection(source_name, target_name, object_dict):
             target_entries = target_object.node[:np.prod(target_object.sizes)]
         # if it's not the kernel, it's the matrix
         else:
-            target_entries = target_object.node[:np.prod(target_object.sizes)]
+            target_entries = target_object.node[np.prod(target_object.sizes):]
     # otherwise the target entries are all entries of the target node
     else:
         target_entries = target_object.node
@@ -210,9 +246,9 @@ def make_connection(source_name, target_name, object_dict):
                                                'Upscale Projection')
             upscale.make_node()
             # connect the Static Gain to the upscale
-            nengo.Connection(source_object.node, upscale.node)
+            nengo.Connection(source_object.node, upscale.node, synapse=0)
             # and connect the upscale to the target_object
-            nengo.Connection(upscale.node, target_entries)
+            nengo.Connection(upscale.node, target_entries, synapse=0)
 
         else:
             print('Upscaling from', source_object.sizes, 'to', target_size, 

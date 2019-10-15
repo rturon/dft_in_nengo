@@ -1,0 +1,97 @@
+{
+    "name": "Nengo_test",
+    "filename": "\/home\/rabea\/Documents\/Uni\/Master\/Masterprojekt\/dft_in_nengo\/JSON\/experiment_nengo_test.json",
+    "repetitions": "5",
+    "ActionSequences": {
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Blue",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Left",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Cyan",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "0 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Blue",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Left",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Cyan",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Action: Imagine",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "0.5 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.EndTrial": {
+                    "Reset type": "Reset",
+                    "Success": "true",
+                    "Message": "",
+                    "stop triggers": "true"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "10 s"
+            }
+        }
+    },
+    "repeat": "true"
+}

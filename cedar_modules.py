@@ -224,28 +224,55 @@ class NeuralField(object):
         self.nonlinearity = nonlinearity
         self.border_type = border_type
         self.input_noise_gain = input_noise_gain
-        self.probes = {"sigmoided activation": [],
-                       "lateral interaction": [],
-                       "activation": [],
-                       "sigmoided sum": []}
+        # self.probes = {"sigmoided activation": [],
+        #                "lateral interaction": [],
+        #                "activation": [],
+        #                "sigmoided sum": []}
         
-        assert (kernel.dims == len(sizes) or (len(sizes) == 0 and kernel.dims == 1)), \
-                "Kernel must have same number of dimensions as Neural Field!"
+        # TODO: assertion not working anymore, since kernel can also be list now
+        # assert (kernel.dims == len(sizes) or (len(sizes) == 0 and kernel.dims == 1)), \
+        #         "Kernel must have same number of dimensions as Neural Field!"
         self.kernel = kernel
         
-        self.kernel_matrix = kernel()
+        # add kernels? other option would be to convolve with both kernels
+        # in the update step
+        if type(kernel) == list:
+            print('More than one kernel!')
+            km1 = kernel[0]()
+            km2 = kernel[1]()
+            if km1.shape == km2.shape:
+                self.kernel_matrix = km1 + km2
+            else:
+                k_big = km1 if km1.shape[0] > km2.shape[0] else km2
+                k_small = km1 if km1.shape[0] < km2.shape[0] else km2
+
+                k_mask = np.zeros(k_big.shape)
+                i_start = (k_big.shape[0]-k_small.shape[0])//2
+                i_end = i_start + k_small.shape[0]
+                print(len(k_big.shape))
+                if len(k_big.shape) == 1:
+                    k_mask[i_start:i_end] = k_small
+                elif len(k_big.shape) == 2:
+                    k_mask[i_start:i_end, i_start:i_end] = k_small
+                elif len(k_big.shape) == 3:
+                    k_mask[i_start:i_end,i_start:i_end,i_start:i_end] = k_small
+                self.kernel_matrix = k_big + k_mask
+                
+                            
+        else:
+            self.kernel_matrix = kernel()
         self.name = name
         
     def update(self, stim):
         a = self.nonlinearity(self.u)
-        self.probes["sigmoided activation"].append(a)
+        # self.probes["sigmoided activation"].append(a)
         recurr = pad_and_convolve(a, self.kernel_matrix, self.border_type)
-        self.probes["lateral interaction"].append(recurr)
+        # self.probes["lateral interaction"].append(recurr)
         # in cedar the noise is divided by sqrt(tau)
         self.u += (-self.u + self.h + self.c_glob * np.sum(a) + recurr + stim)/self.tau + \
                   (self.input_noise_gain * np.random.randn(*self.sizes)) / self.tau 
-        self.probes["activation"].append(np.array(self.u))
-        self.probes["sigmoided sum"].append(np.sum(a))
+        # self.probes["activation"].append(np.array(self.u))
+        # self.probes["sigmoided sum"].append(np.sum(a))
         # return sigmoided activation and not activation?
         # self.u = self.nonlinearity(self.u)
         return self.u
@@ -465,9 +492,20 @@ class Boost(object):
     def __init__(self, strength, name=None):
         self.strength = strength
         self.name = name
+        self.active = False
+    
+    def update(self):
+        if self.active:
+            return self.strength
+        else:
+            return 0
 
     def make_node(self):
         if self.name is not None:
-            self.node = nengo.Node([self.strength], label=self.name)
+            # the strength value should only be the node's value when it 
+            # it is active, otherwise the default value of the node is 0
+            self.node = nengo.Node(lambda t: self.update(), label=self.name)
+            # self.node = nengo.Node([self.strength], label=self.name)
         else:
-            self.node = nengo.Node([self.strength])
+            self.node = nengo.Node(lambda t: self.update())
+            # self.node = nengo.Node([self.strength])
