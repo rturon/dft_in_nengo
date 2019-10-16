@@ -8,7 +8,7 @@
             "ActionSet": {
                 "cedar.proc.experiment.action.SetParameterValue": {
                     "Step Parameter": {
-                        "element path": "Reference: Blue",
+                        "element path": "Reference: Green",
                         "parameter path": "active",
                         "PropertyParameter": "true"
                     },
@@ -16,7 +16,7 @@
                 },
                 "cedar.proc.experiment.action.SetParameterValue": {
                     "Step Parameter": {
-                        "element path": "Spatial relation: Left",
+                        "element path": "Spatial relation: Above",
                         "parameter path": "active",
                         "PropertyParameter": "true"
                     },
@@ -41,7 +41,7 @@
             "ActionSet": {
                 "cedar.proc.experiment.action.SetParameterValue": {
                     "Step Parameter": {
-                        "element path": "Reference: Blue",
+                        "element path": "Reference: Green",
                         "parameter path": "active",
                         "PropertyParameter": "false"
                     },
@@ -49,7 +49,7 @@
                 },
                 "cedar.proc.experiment.action.SetParameterValue": {
                     "Step Parameter": {
-                        "element path": "Spatial relation: Left",
+                        "element path": "Spatial relation: Above",
                         "parameter path": "active",
                         "PropertyParameter": "false"
                     },
@@ -80,6 +80,138 @@
         "cedar.proc.experiment.ActionSequence": {
             "name": "ActionSequence",
             "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Green",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Red",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Left",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "8 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Green",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Red",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Left",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "8.5 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Red",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Blue",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Right",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "16 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Red",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Blue",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Right",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "16.5 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
                 "cedar.proc.experiment.action.EndTrial": {
                     "Reset type": "Reset",
                     "Success": "true",
@@ -89,7 +221,7 @@
             },
             "Condition": {
                 "type": "cedar.proc.experiment.condition.AtTime",
-                "Time": "10 s"
+                "Time": "25 s"
             }
         }
     },

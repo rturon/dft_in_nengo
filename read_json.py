@@ -222,18 +222,11 @@ def create_size_param(obj, size_value, CM=False):
     if not CM:
         sizes = ('sizes', size_value)
     else:
-        # check if CM already has one size param --> DOES NOT WORK LIKE THIS!!
-        # the obj here is the obj from which to get the size, not for which to
-        # get the size 
-        # solution: return it with 'inp size1' here and check if that's what's 
-        # needed in backtrace function
         sizes = ('inp size1', size_value)
 
     return sizes
 
 def get_size_param(obj, CM=False):
-    # TODO: add option for checking for ComponentMultiply sizes
-    # TODO: add option to add ComponentMultiply sizes instead of normal sizes
     if any(['size y' in tpl[0] for tpl in obj[1]]):
         ind = [i for i, elem in enumerate(obj[1]) if elem[0] == 'size y'][0]
         # sizes = ('sizes', [obj[1][ind-1][1],obj[1][ind][1]])
@@ -262,7 +255,6 @@ def backtrace_size(obj, connections, objects_dict, obj_wo_size):
                     'cedar.processing.steps.Convolution', 'cedar.processing.Flip',
                     'cedar.processing.StaticGain']
     
-    # TODO: add ComponentMultiply sizes to list
     size_params = ['size x', 'size y', 'sizes', 'output dimension sizes', 
                    'inp size1', 'inp size2']
 
@@ -295,11 +287,7 @@ def backtrace_size(obj, connections, objects_dict, obj_wo_size):
         print('The object %s does not have a source!' %obj[1][0][1])
 
 def backtrace_CM_size(cm_obj, connections, objects_dict):
-    # print('Trying to backtrace size for a CM object:', cm_objget_size_param[1][0][1])
-    # if the object to get the size for is a ComponentMultiply get_size_paraminstance, 
-    # wee need to get the two input sizes for this object. 
-    # we can assume that it has exactly two inputs, not more or less
-    # but we still check if that's true
+
     sources = []
     # first just get the two sources
     for connection in connections:

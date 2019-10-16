@@ -237,7 +237,7 @@ class NeuralField(object):
         # add kernels? other option would be to convolve with both kernels
         # in the update step
         if type(kernel) == list:
-            print('More than one kernel!')
+            # print('More than one kernel!')
             km1 = kernel[0]()
             km2 = kernel[1]()
             if km1.shape == km2.shape:
@@ -249,7 +249,7 @@ class NeuralField(object):
                 k_mask = np.zeros(k_big.shape)
                 i_start = (k_big.shape[0]-k_small.shape[0])//2
                 i_end = i_start + k_small.shape[0]
-                print(len(k_big.shape))
+                # print(len(k_big.shape))
                 if len(k_big.shape) == 1:
                     k_mask[i_start:i_end] = k_small
                 elif len(k_big.shape) == 2:
