@@ -140,24 +140,38 @@ class BoxKernel(object):
     def __call__(self):
         return self.kernel_matrix
     
-def pad_and_convolve(inp, kernel, border):
-    
+def pad_and_convolve(inp, kernel, pad_width):
     # test if input consists of more than one number, i.e. field not 0-dimensional
     if inp.shape != ():
-        # compute padding values
-        kernel_width = kernel.shape[0]
-        pad_width_f = kernel_width//2
-        pad_width_b = kernel_width//2 if kernel_width % 2 == 1 else kernel_width//2 - 1 
-
-        # translate border type to boundary mode
-        mode = 'wrap' if border == 'cyclic' else 'constant'
         # pad the input
-        inp_padded = np.pad(inp, pad_width=(pad_width_f, pad_width_b), mode=mode)
-    
+        inp_padded = np.pad(inp, pad_width=pad_width, mode='wrap')
+
     # otherwise the kernel is just a scalar and can directly be convolved with the 
     # scalar input
     else:
         inp_padded = inp
+    # perform the convolution
+    conv = scipy.signal.convolve(inp_padded, kernel, mode='valid')
+    
+    return conv
+
+def pad_and_convolve_old(inp, kernel, border):
+     # test if input consists of more than one number, i.e. field not 0-dimensional
+    if inp.shape != ():
+
+        kernel_width = kernel.shape[0]
+        pad_width_f = kernel_width//2
+        pad_width_b = kernel_width//2 if kernel_width % 2 == 1 else kernel_width//2 - 1 
+        pad_width = (pad_width_f, pad_width_b)
+        # pad the input
+        mode = 'wrap' if border == 'cyclic' else 'constant'
+        inp_padded = np.pad(inp, pad_width=pad_width, mode=mode)
+
+    # otherwise the kernel is just a scalar and can directly be convolved with the 
+    # scalar input
+    else:
+        inp_padded = inp
+
     # perform the convolution
     conv = scipy.signal.convolve(inp_padded, kernel, mode='valid')
     
@@ -263,30 +277,68 @@ class NeuralField(object):
             self.kernel_matrix = kernel()
         self.name = name
         
-    def update(self, stim):
+    # def update(self, stim):
+    #     a = self.nonlinearity(self.u)
+    #     # self.probes["sigmoided activation"].append(a)
+    #     recurr = pad_and_convolve_old(a, self.kernel_matrix, self.border_type)
+    #     # self.probes["lateral interaction"].append(recurr)
+    #     # in cedar the noise is divided by sqrt(tau)
+    #     self.u += (-self.u + self.h + self.c_glob * np.sum(a) + recurr + stim)/self.tau + \
+    #               (self.input_noise_gain * np.random.randn(*self.sizes)) / self.tau 
+    #     # self.probes["activation"].append(np.array(self.u))
+    #     # self.probes["sigmoided sum"].append(np.sum(a))
+    #     # return sigmoided activation and not activation?
+    #     # self.u = self.nonlinearity(self.u)
+    #     return self.u
+
+    def update_cyclic(self, stim, pad_width):
         a = self.nonlinearity(self.u)
-        # self.probes["sigmoided activation"].append(a)
-        recurr = pad_and_convolve(a, self.kernel_matrix, self.border_type)
-        # self.probes["lateral interaction"].append(recurr)
-        # in cedar the noise is divided by sqrt(tau)
+        recurr = pad_and_convolve(a, self.kernel_matrix, pad_width)
         self.u += (-self.u + self.h + self.c_glob * np.sum(a) + recurr + stim)/self.tau + \
                   (self.input_noise_gain * np.random.randn(*self.sizes)) / self.tau 
-        # self.probes["activation"].append(np.array(self.u))
-        # self.probes["sigmoided sum"].append(np.sum(a))
-        # return sigmoided activation and not activation?
-        # self.u = self.nonlinearity(self.u)
         return self.u
-        
+
+    def update_zeros(self, stim):
+        a = self.nonlinearity(self.u)
+        recurr = scipy.signal.convolve(a, self.kernel_matrix, mode='same')
+        self.u += (-self.u + self.h + self.c_glob * np.sum(a) + recurr + stim)/self.tau + \
+                  (self.input_noise_gain * np.random.randn(*self.sizes)) / self.tau 
+        return self.u
+
+
     def make_node(self):
+
+        if self.border_type == 'zero-filled borders':
+            # call only convolve update
+            update = lambda t, x: self.update_zeros(x.reshape(self.sizes)).flatten()
+        else:
+            # bordertype is cyclic, need pad_and_convolve update
+            kernel_width = self.kernel_matrix.shape[0]
+            pad_width_f = kernel_width//2
+            pad_width_b = kernel_width//2 if kernel_width % 2 == 1 else kernel_width//2 - 1 
+            pad_width = (pad_width_f, pad_width_b)
+
+            update = lambda t, x: self.update_cyclic(x.reshape(self.sizes),
+                                                     pad_width).flatten()
+
         if self.name is not None:
-            self.node = nengo.Node(lambda t, x: self.update(x.reshape(self.sizes)).flatten(),
+            self.node = nengo.Node(update,
                           size_in=int(np.product(self.sizes)), 
                           size_out=int(np.product(self.sizes)),
                           label=self.name)
         else:
-            self.node = nengo.Node(lambda t, x: self.update(x.reshape(self.sizes)).flatten(),
+            self.node = nengo.Node(update,
                           size_in=int(np.product(self.sizes)), 
                           size_out=int(np.product(self.sizes)))
+        # if self.name is not None:
+        #     self.node = nengo.Node(lambda t, x: self.update(x.reshape(self.sizes)).flatten(),
+        #                   size_in=int(np.product(self.sizes)), 
+        #                   size_out=int(np.product(self.sizes)),
+        #                   label=self.name)
+        # else:
+        #     self.node = nengo.Node(lambda t, x: self.update(x.reshape(self.sizes)).flatten(),
+        #                   size_in=int(np.product(self.sizes)), 
+        #                   size_out=int(np.product(self.sizes)))
                           
 
 class ComponentMultiply(object):
@@ -451,18 +503,48 @@ class Convolution(object):
         self.border_type = border_type
         self.name = name
         
-    def update(self, inp):
+    # def update(self, inp):
+    #     kernel = inp[:int(np.prod(self.sizes))].reshape(*self.sizes)
+    #     matrix = inp[int(np.prod(self.sizes)):].reshape(*self.sizes)
+    #     return pad_and_convolve_old(matrix, kernel, self.border_type).flatten()
+
+    def update_cyclic(self, inp):
         kernel = inp[:int(np.prod(self.sizes))].reshape(*self.sizes)
         matrix = inp[int(np.prod(self.sizes)):].reshape(*self.sizes)
-        return pad_and_convolve(matrix, kernel, self.border_type).flatten()
+
+        kernel_width = kernel.shape[0]
+        pad_width_f = kernel_width//2
+        pad_width_b = kernel_width//2 if kernel_width % 2 == 1 else kernel_width//2 - 1 
+        pad_width = (pad_width_f, pad_width_b)
+
+        return pad_and_convolve(matrix, kernel, pad_width).flatten()
+
+    def update_zeros(self, inp):
+        kernel = inp[:int(np.prod(self.sizes))].reshape(*self.sizes)
+        matrix = inp[int(np.prod(self.sizes)):].reshape(*self.sizes)
+
+        return scipy.signal.convolve(matrix, kernel, mode='same').flatten()
     
     def make_node(self):
+
+        if self.border_type == 'zero-filled borders':
+            update = lambda t, x: self.update_zeros(x)
+
+        else:
+            update = lambda t, x: self.update_cyclic(x)
+
         if self.name is not None:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)*2), 
+            self.node = nengo.Node(update, size_in=int(np.prod(self.sizes)*2), 
                           size_out=int(np.prod(self.sizes)), label=self.name)
         else:
-            self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)*2), 
+            self.node = nengo.Node(update, size_in=int(np.prod(self.sizes)*2), 
                           size_out=int(np.prod(self.sizes)))
+        # if self.name is not None:
+        #     self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)*2), 
+        #                   size_out=int(np.prod(self.sizes)), label=self.name)
+        # else:
+        #     self.node = nengo.Node(lambda t, x: self.update(x), size_in=int(np.prod(self.sizes)*2), 
+        #                   size_out=int(np.prod(self.sizes)))
 
     
 class SpatialTemplate(object):
