@@ -4,3 +4,4 @@
 *.log
 /simulation_data/*
 *Untitled.ipynb
+*.mypy_cache/
