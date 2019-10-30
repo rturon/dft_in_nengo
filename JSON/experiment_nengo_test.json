@@ -107,7 +107,7 @@
             },
             "Condition": {
                 "type": "cedar.proc.experiment.condition.AtTime",
-                "Time": "8 s"
+                "Time": "9 s"
             }
         },
         "cedar.proc.experiment.ActionSequence": {
@@ -140,7 +140,7 @@
             },
             "Condition": {
                 "type": "cedar.proc.experiment.condition.AtTime",
-                "Time": "8.5 s"
+                "Time": "9.5 s"
             }
         },
         "cedar.proc.experiment.ActionSequence": {
@@ -173,7 +173,7 @@
             },
             "Condition": {
                 "type": "cedar.proc.experiment.condition.AtTime",
-                "Time": "16 s"
+                "Time": "18 s"
             }
         },
         "cedar.proc.experiment.ActionSequence": {
@@ -206,7 +206,73 @@
             },
             "Condition": {
                 "type": "cedar.proc.experiment.condition.AtTime",
-                "Time": "16.5 s"
+                "Time": "18.5 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Blue",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Orange",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Left",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "27 s"
+            }
+        },
+        "cedar.proc.experiment.ActionSequence": {
+            "name": "ActionSequence",
+            "ActionSet": {
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Reference: Blue",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Target: Orange",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                },
+                "cedar.proc.experiment.action.SetParameterValue": {
+                    "Step Parameter": {
+                        "element path": "Spatial relation: Left",
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    },
+                    "append experiment info (string para only)": "false"
+                }
+            },
+            "Condition": {
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "27.5 s"
             }
         },
         "cedar.proc.experiment.ActionSequence": {
@@ -221,9 +287,9 @@
             },
             "Condition": {
                 "type": "cedar.proc.experiment.condition.AtTime",
-                "Time": "25 s"
+                "Time": "36 s"
             }
         }
     },
-    "repeat": "true"
+    "repeat": "false"
 }

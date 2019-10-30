@@ -12514,18 +12514,8 @@
         "Reference[BUFFER].activation": "0.05 s",
         "Relational Behavior.CoS node[BUFFER].activation": "0.05 s",
         "Relational Behavior.intention node[BUFFER].activation": "0.05 s",
-        "Relational Behavior.new Static Gain 11[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new Static Gain 22[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new Static Gain 23[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new Static Gain 24[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new Static Gain 37[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new Static Gain 3[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new Static Gain 5[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new StaticGain 2[OUTPUT].output": "0.05 s",
-        "Relational Behavior.new StaticGain 6[OUTPUT].output": "0.05 s",
         "Spatial Memory Nodes.CoS node[BUFFER].activation": "0.05 s",
         "Spatial Memory Nodes.intention node[BUFFER].activation": "0.05 s",
-        "Static Gain 6[OUTPUT].output": "0.05 s",
         "Target Behavior.CoS node[BUFFER].activation": "0.05 s",
         "Target Behavior.intention node[BUFFER].activation": "0.05 s",
         "Target Blue Memory[BUFFER].activation": "0.05 s",
@@ -15280,11 +15270,11 @@
         }
     ],
     "ui view": {
-        "ScrollBarX": "-5507",
-        "ScrollBarY": "408",
-        "SliderPosX": "-5507",
-        "SliderPosY": "408",
-        "Zoom": "0.57999999999999996"
+        "ScrollBarX": "-5291",
+        "ScrollBarY": "-20",
+        "SliderPosX": "-5291",
+        "SliderPosY": "-20",
+        "Zoom": "0.56999999999999995"
     },
     "ui generic": {
         "group": "",
