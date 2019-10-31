@@ -1,9 +1,5 @@
 from task_creation import create_experiment, create_task_list
-from create_model import create_model, run_task
-from plotting import plot_2d, plot_1d, plot_0d, plot_probes
-from datetime import datetime
 import os
-import time
 import json
 
 
@@ -13,8 +9,7 @@ dataset1 = "Ragni2018_smalllarge.csv"
 dataset2 = "3ps.csv"
 dataset3 = "4ps.csv"
 
-tau_factor = 0.1
-dataset = dataset0
+dataset = dataset3
 
 experiment_dir = "../experiments/%s/" % dataset.split('.')[0]
 if not os.path.isdir(experiment_dir):

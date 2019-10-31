@@ -1,5 +1,5 @@
 {{
-    "name": "3 Premises",
+    "name": {name},
     "filename": "\/home\/rabea\/Documents\/Uni\/Master\/Masterprojekt\/dft_in_nengo\/JSON\/3PremisesTemplate.json",
     "repetitions": "3",
     "ActionSequences": {{

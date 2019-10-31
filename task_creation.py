@@ -71,6 +71,9 @@ def create_task_list(filepath):
 
 def create_experiment(task, save_to):
 
+    dataset = save_to.split('/')[-2]
+    task_id = save_to.split('/')[-1][:-5]
+    name = '"%s_%s"' %(dataset, task_id)
     target1 = '"%s"' % task[0][1]
     target2 = '"%s"' % task[1][1]
     reference1 = '"%s"' % task[0][2]
@@ -82,7 +85,7 @@ def create_experiment(task, save_to):
         with open('./JSON/2PremisesTemplate.json', 'r') as file:
             fmt_str = file.read()
 
-        experiment = fmt_str.format(target1=target1, relation1=relation1,
+        experiment = fmt_str.format(name=name, target1=target1, relation1=relation1,
                                     reference1=reference1, target2=target2,
                                     relation2=relation2, reference2=reference2)
 
@@ -98,7 +101,7 @@ def create_experiment(task, save_to):
         reference3 = '"%s"' % task[2][2]
         relation3 = '"%s"' % task[2][0]
 
-        experiment = fmt_str.format(target1=target1, relation1=relation1,
+        experiment = fmt_str.format(name=name, target1=target1, relation1=relation1,
                                     reference1=reference1, target2=target2,
                                     relation2=relation2, reference2=reference2,
                                     target3=target3, relation3=relation3,
@@ -119,7 +122,7 @@ def create_experiment(task, save_to):
         reference4 = '"%s"' % task[3][2]
         relation4 = '"%s"' % task[3][0]
 
-        experiment = fmt_str.format(target1=target1, relation1=relation1,
+        experiment = fmt_str.format(name=name, target1=target1, relation1=relation1,
                                     reference1=reference1, target2=target2,
                                     relation2=relation2, reference2=reference2,
                                     target3=target3, relation3=relation3,
