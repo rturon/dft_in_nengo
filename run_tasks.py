@@ -15,15 +15,20 @@ dataset3 = "4ps.csv"
 tau_factor = 0.01
 dataset = dataset2
 
-image_dir = "../images/%s/" % dataset
+image_dir = "../images/%s/" % dataset.split('.')[0]
 tasks = create_task_list(datapath + dataset)
 
-task_id_dict = {i: task for (i, task) in enumerate(tasks)}
+task_id_dict = {i: task for (i, task) in enumerate(sorted(tasks))}
+
+
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+with open(experiment_dir+"task_dict.json", 'w') as file:
+    json.dump(task_id_dict, file)
 
 # run tasks
 start_time = time.time()
 
-for i, task in enumerate(tasks):
+for i, task in enumerate(sorted(tasks)):
     model, nodes, probes = create_model(
         "./JSON/mental_imagery_extended.json", tau_factor=tau_factor
     )

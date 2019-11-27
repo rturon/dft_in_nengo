@@ -11,7 +11,7 @@ import time
 
 PROBE_ALL = False
 SAVE_SIMULATION = False
-TAU_FACTOR = 0.002
+TAU_FACTOR = 0.5
 
 objects, connections = load_from_json("./JSON/mental_imagery_extended.json")
 
@@ -122,7 +122,7 @@ with nengo.Simulator(model) as sim:
     nengo_objects["Spatial relation: Above"].active = False
     nengo_objects["Action: Imagine"].active = True
 
-    sim.run_steps(int(7500 * TAU_FACTOR))
+    sim.run_steps(int(8500 * TAU_FACTOR))
 
     # Supply second sentence: There is a red object to the left of the green object
     nengo_objects["Reference: Green"].active = True
@@ -135,7 +135,7 @@ with nengo.Simulator(model) as sim:
     nengo_objects["Target: Red"].active = False
     nengo_objects["Spatial relation: Left"].active = False
 
-    sim.run_steps(int(7500 * TAU_FACTOR))
+    sim.run_steps(int(8500 * TAU_FACTOR))
 
     # Supply third sentence: There is a blue object to the right of the red object
     nengo_objects["Reference: Red"].active = True
@@ -148,7 +148,7 @@ with nengo.Simulator(model) as sim:
     nengo_objects["Target: Blue"].active = False
     nengo_objects["Spatial relation: Right"].active = False
 
-    sim.run_steps(int(7500 * TAU_FACTOR))
+    sim.run_steps(int(8500 * TAU_FACTOR))
 
     # supply fourth sentence: There is an orange object to the left of the blue object
     nengo_objects["Reference: Blue"].active = True
@@ -161,18 +161,18 @@ with nengo.Simulator(model) as sim:
     nengo_objects["Target: Orange"].active = False
     nengo_objects["Spatial relation: Left"].active = False
 
-    sim.run_steps(int(7500 * TAU_FACTOR))
+    sim.run_steps(int(8500 * TAU_FACTOR))
 
     simdata = sim.data
 
 
 end_time = time.time()
 print(
-    "\n Total time needed for simulating 4 sentences: %.2f minutes \n"
-    % ((end_time - start_time) / 60)
+    "\n Total time needed for simulating 4 sentences with tau_factor %.2f: %.2f minutes \n"
+    % (TAU_FACTOR, (end_time - start_time) / 60)
 )
 # get timestamp for saving data and images
-timestamp = str(datetime.now()).rsplit(".", 1)[0]
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 print(timestamp)
 
 if SAVE_SIMULATION:
@@ -187,15 +187,13 @@ if SAVE_SIMULATION:
 # for TAU_FACTOR 0.05 show every fifth step, for other TAU_FACTORs show a multiple
 # thereof
 num_samples = simdata[probes["Reference Blue Memory"]].shape[0]
-print("Number of samples:", num_samples)
+
 
 if num_samples > 150:
-    stepsize = 5 * int(TAU_FACTOR / 0.05)
+    stepsize = 5 * round(TAU_FACTOR / 0.05)
+    print("Number of samples:", num_samples, 'Stepsize:', stepsize)
     time_points = np.arange(0, num_samples, stepsize)[-36:]
-    print(
-        "Difference between accurate points and the ones used:",
-        12 * TAU_FACTOR / 0.05 - stepsize,
-    )
+    
 else:
     time_points = np.arange(0, num_samples, 2)[-36:]
 print("time_points: \n", time_points, len(time_points))
@@ -239,7 +237,7 @@ plots_1d = [
 
 # plot Memory and Production nodes
 plt.figure(figsize=(15, 18))
-plt.suptitle("Memory and Production Nodes")
+# plt.suptitle("Memory and Production Nodes")
 for i, name in enumerate(plots_1d):
     if name == "Empty":
         continue
@@ -250,15 +248,15 @@ for i, name in enumerate(plots_1d):
 plt.tight_layout(rect=(0, 0, 1, 0.97))
 
 # save
-if not os.path.isdir("../images/%.2f" % TAU_FACTOR):
-    os.mkdir("../images/%.2f" % TAU_FACTOR)
+if not os.path.isdir("../images/paper_example/%.2f" % TAU_FACTOR):
+    os.mkdir("../images/paper_example/%.2f" % TAU_FACTOR)
 plt.savefig(
-    "../images/%.2f/Memory and Production Nodes_%.2f_%s.png"
+    "../images/paper_example/%.2f/Memory and Production Nodes_%.2f_%s.png"
     % (TAU_FACTOR, TAU_FACTOR, timestamp)
 )
 
 # plot spatial scene
-filepath = "../images/%.2f/Spatial Scene_%.2f_%s.png" % (
+filepath = "../images/paper_example/%.2f/Spatial Scene_%.2f_%s.png" % (
     TAU_FACTOR,
     TAU_FACTOR,
     timestamp,
@@ -266,12 +264,11 @@ filepath = "../images/%.2f/Spatial Scene_%.2f_%s.png" % (
 plot_2d(
     simdata[probes["Indeterminent "]],
     time_points,
-    True,
-    "Spatial Scene - Tau_factor %.2f" % TAU_FACTOR,
-    filepath,
+    colorbar=True,
+    save=filepath,
 )
 # plot sigmoided spatial scene
-filepath = "../images/%.2f/Sigmoided Spatial Scene_%.2f_%s.png" % (
+filepath = "../images/paper_example/%.2f/Sigmoided Spatial Scene_%.2f_%s.png" % (
     TAU_FACTOR,
     TAU_FACTOR,
     timestamp,
@@ -279,12 +276,11 @@ filepath = "../images/%.2f/Sigmoided Spatial Scene_%.2f_%s.png" % (
 plot_2d(
     sigmoid(simdata[probes["Indeterminent "]]),
     time_points,
-    True,
-    "Sigmoided Spatial Scene - Tau_factor %.2f" % TAU_FACTOR,
-    filepath,
+    colorbar=True,
+    save=filepath,
 )
 # plot the colour field
-filepath = "../images/%.2f/Colour_%.2f_%s.png" % (
+filepath = "../images/paper_example/%.2f/Colour_%.2f_%s.png" % (
     TAU_FACTOR,
     TAU_FACTOR,
     timestamp,
@@ -292,11 +288,10 @@ filepath = "../images/%.2f/Colour_%.2f_%s.png" % (
 plot_1d(
     simdata[probes["Colour"]],
     time_points,
-    "Colour - Tau_factor %.2f" % TAU_FACTOR,
-    filepath,
+    save=filepath,
 )
 # plot the relational field
-filepath = "../images/%.2f/Relational Field_%.2f_%s.png" % (
+filepath = "../images/paper_example/%.2f/Relational Field_%.2f_%s.png" % (
     TAU_FACTOR,
     TAU_FACTOR,
     timestamp,
@@ -305,12 +300,11 @@ object_centered_data = simdata[probes["Object-centered "]]
 plot_2d(
     object_centered_data,
     time_points,
-    True,
-    "Relational Field - Tau_factor %.2f" % TAU_FACTOR,
-    filepath,
+    colorbar=True,
+    save=filepath,
 )
 # plot the target field
-filepath = "../images/%.2f/Target Field_%.2f_%s.png" % (
+filepath = "../images/paper_example/%.2f/Target Field_%.2f_%s.png" % (
     TAU_FACTOR,
     TAU_FACTOR,
     timestamp,
@@ -319,12 +313,11 @@ target = simdata[probes["Target"]]
 plot_2d(
     target,
     time_points,
-    True,
-    "Target Field - Tau_factor %.2f" % TAU_FACTOR,
-    filepath,
+    colorbar=True,
+    save=filepath,
 )
 # plot the reference field
-filepath = "../images/%.2f/Reference Field_%.2f_%s.png" % (
+filepath = "../images/paper_example/%.2f/Reference Field_%.2f_%s.png" % (
     TAU_FACTOR,
     TAU_FACTOR,
     timestamp,
@@ -333,9 +326,8 @@ reference_data = simdata[probes["Reference"]]
 plot_2d(
     reference_data,
     time_points,
-    True,
-    "Reference Field - Tau_factor %.2f" % TAU_FACTOR,
-    filepath,
+    colorbar=True,
+    save=filepath,
 )
 
 print("\n All plots created. \n")
