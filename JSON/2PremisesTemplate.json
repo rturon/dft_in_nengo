@@ -1,0 +1,163 @@
+{{
+    "name": {name},
+    "filename": "\/home\/rabea\/Documents\/Uni\/Master\/Masterprojekt\/dft_in_nengo\/JSON\/2PremisesTemplate.json",
+    "repetitions": "3",
+    "ActionSequences": {{
+        "cedar.proc.experiment.ActionSequence": {{
+            "name": "ActionSequence",
+            "ActionSet": {{
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {reference1},
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {relation1},
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {target1},
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }}
+            }},
+            "Condition": {{
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "0 s"
+            }}
+        }},
+        "cedar.proc.experiment.ActionSequence": {{
+            "name": "ActionSequence",
+            "ActionSet": {{
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {reference1},
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {relation1},
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {target1},
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": "Action: Imagine",
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }}
+            }},
+            "Condition": {{
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "0.5 s"
+            }}
+        }},
+        "cedar.proc.experiment.ActionSequence": {{
+            "name": "ActionSequence",
+            "ActionSet": {{
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {reference2},
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {target2},
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {relation2},
+                        "parameter path": "active",
+                        "PropertyParameter": "true"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }}
+            }},
+            "Condition": {{
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "9 s"
+            }}
+        }},
+        "cedar.proc.experiment.ActionSequence": {{
+            "name": "ActionSequence",
+            "ActionSet": {{
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {reference2},
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {target2},
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }},
+                "cedar.proc.experiment.action.SetParameterValue": {{
+                    "Step Parameter": {{
+                        "element path": {relation2},
+                        "parameter path": "active",
+                        "PropertyParameter": "false"
+                    }},
+                    "append experiment info (string para only)": "false"
+                }}
+            }},
+            "Condition": {{
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "9.5 s"
+            }}
+        }},
+        "cedar.proc.experiment.ActionSequence": {{
+            "name": "ActionSequence",
+            "ActionSet": {{
+                "cedar.proc.experiment.action.EndTrial": {{
+                    "Reset type": "Reset",
+                    "Success": "true",
+                    "Message": "",
+                    "stop triggers": "true"
+                }}
+            }},
+            "Condition": {{
+                "type": "cedar.proc.experiment.condition.AtTime",
+                "Time": "18 s"
+            }}
+        }}
+    }},
+    "repeat": "true"
+}}
