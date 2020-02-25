@@ -1,4 +1,6 @@
-from task_creation import create_task_list
+from ccobra_task_creation import create_task_list
+import sys
+sys.path.append('../cedar_utils/')
 from create_model import create_model, run_task
 import nengo
 from plotting import plot_2d, plot_1d, plot_0d, plot_probes

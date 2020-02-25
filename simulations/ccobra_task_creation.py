@@ -29,11 +29,15 @@ def translate_task(task_orig):
 
     # add other objects to the translation dictionary if needed
 
-    objects = list(set([task_orig[j][i]
-                        for j in range(len(task_orig)) for i in [1, 2]]))
+    objects = list(sorted(set([task_orig[j][i]
+                               for j in range(len(task_orig)) for i in [1, 2]])))
+    print('objects:', objects)
     if not('A' in objects or 'B' in objects or 'C' in objects or 'D' in objects):
         trans_back = {}
         for i, ob in enumerate(objects):
+            print('Current object:', ob)
+            print('Pos to color result:',
+                  _pos_to_color[i], 'colors result:', _colors[i])
             trans_dict[ob] = {'target': _pos_to_color[i]
                               [0], 'reference': _pos_to_color[i][1]}
             trans_back[_colors[i]] = ob
@@ -62,7 +66,7 @@ def create_task_list(filepath):
     tasks = tasks.drop_duplicates()
     tasks = list(map(task_to_list, tasks))
     tasks_translated = list(map(translate_task, tasks))
-    tasks_translated = list(set(tasks_translated))
+    tasks_translated = list(sorted(set(tasks_translated)))
     print('Number of tasks originally: %i \n After removing duplicates: %i'
           % (task_num_or, len(tasks_translated)))
 
@@ -73,7 +77,7 @@ def create_experiment(task, save_to):
 
     dataset = save_to.split('/')[-2]
     task_id = save_to.split('/')[-1][:-5]
-    name = '"%s_%s"' %(dataset, task_id)
+    name = '"%s_%s"' % (dataset, task_id)
     target1 = '"%s"' % task[0][1]
     target2 = '"%s"' % task[1][1]
     reference1 = '"%s"' % task[0][2]

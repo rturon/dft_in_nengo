@@ -1,4 +1,6 @@
 from read_json import load_from_json
+import sys
+sys.path.append('../cedar_utils/')
 from parse_cedar_objects import parse_cedar_params, make_connection
 from plotting import plot_1d, plot_2d
 from cedar_modules import AbsSigmoid
@@ -11,7 +13,7 @@ import time
 
 PROBE_ALL = False
 SAVE_SIMULATION = False
-TAU_FACTOR = 0.5
+TAU_FACTOR = 1.
 
 objects, connections = load_from_json("./JSON/mental_imagery_extended.json")
 

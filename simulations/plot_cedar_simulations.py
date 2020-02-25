@@ -4,7 +4,7 @@ import os
 from plotting import plot_probes_cedar
 
 path_start = '/home/rabea/cedarRecordings/mental_imagery_extended_recording/'
-dataset = "Ragni2018_carddir"
+dataset = "Ragni2018_smalllarge"
 # SET TIME FACTOR MANUALLY, NOT ANYWHERE SAVED IN DATA!!
 time_factor = 0.26
 
