@@ -1,3 +1,9 @@
+""" This file provides functionality to parse the parameters of cedar modules
+    and create a Nengo Node instance with corresponding functionality. For
+    each module from the cedar spatial reasoning architecture a seperate parser
+    is defined. The input to each parser is a dictionary as read from the JSON
+    file that describes the architecture.
+"""
 import cedar_modules
 import numpy as np
 import nengo

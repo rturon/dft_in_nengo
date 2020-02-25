@@ -1,3 +1,7 @@
+""" This script runs simulations of the spatial reasoning architecture on a
+    CCOBRA dataset. The dataset to be used can be set here by assigning one of
+    the datasets defined as 'dataset0' to 'dataset3' to the variable 'dataset'.
+"""
 from ccobra_task_creation import create_task_list
 import sys
 sys.path.append('../cedar_utils/')
