@@ -10,6 +10,7 @@ import nengo
 from plotting import plot_2d, plot_1d, plot_0d, plot_probes
 import os
 import time
+import json
 
 
 datapath = "../ccobra_datasets/"
@@ -21,14 +22,14 @@ dataset3 = "4ps.csv"
 tau_factor = 0.01
 dataset = dataset2
 
-image_dir = "../images/%s/" % dataset.split('.')[0]
+image_dir = "../images/%s/" % dataset.split(".")[0]
 tasks = create_task_list(datapath + dataset)
 
 task_id_dict = {i: task for (i, task) in enumerate(sorted(tasks))}
 
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-with open(experiment_dir+"task_dict.json", 'w') as file:
+with open(experiment_dir + "task_dict.json", "w") as file:
     json.dump(task_id_dict, file)
 
 # run tasks
@@ -47,8 +48,11 @@ for i, task in enumerate(sorted(tasks)):
 
     plot_probes(sim, probes, savedir)
     sim.close()
+time_needed = (time.time() - start_time) / 60
+measure = "min" if time_needed < 121 else "h"
+time_needed = time_needed if time_needed < 121 else time_needed / 60
 
 print(
-    "Total time needed for tasks in %s: %.1f min"
-    % (dataset.split(".")[0], (time.time() - start_time) / 60)
+    "Total time needed for tasks in %s: %.1f %s"
+    % (dataset.split(".")[0], time_needed, measure)
 )
