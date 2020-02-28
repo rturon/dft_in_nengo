@@ -22,7 +22,7 @@ def create_model(filepath, tau_factor=0.2, sample_every=0.01):
         for connection in connections:
             make_connection(connection[0][1], connection[1][1], nengo_objects)
 
-    # the list contains all nodes that are plotted in the plotting widget of the cedar architecture
+    # the list contains a subsample of the modules in the plotting widget of the cedar architecture
     objects_to_probe = [
         "Colour",  # Color attention
         "Projection",  # Attention (space)
