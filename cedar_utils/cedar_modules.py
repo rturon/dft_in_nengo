@@ -563,7 +563,10 @@ class NeuralField(object):
             update = lambda t, x: self.update_zeros(x.reshape(self.sizes)).flatten()
         else:
             # bordertype is cyclic, need pad_and_convolve update
-            kernel_width = self.kernel_matrix.shape[0]
+            # the 1 that is used as the kernel_width for 0-dimensional kernels is not really used
+            # in later computations but needs to be specified here, otherwise, the shape[0] would
+            # throw an error
+            kernel_width = self.kernel_matrix.shape[0] if self.kernel_matrix.shape != () else 1
             pad_width_f = kernel_width//2
             pad_width_b = kernel_width//2 if kernel_width % 2 == 1 else kernel_width//2 - 1 
             pad_width = (pad_width_f, pad_width_b)
